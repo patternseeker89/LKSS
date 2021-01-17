@@ -62,14 +62,15 @@ class Node
             $neededNode = $this->findNodeInChildrenByKey($key, $parentNode);
             if (\is_null($neededNode)) {
                 foreach ($parentNode->children as $childNode) {
-                    return $this->getNodeByKey($key, $childNode);
+                    $findedNode = $this->getNodeByKey($key, $childNode);
+                    if (!\is_null($findedNode)) {
+                        return $findedNode;
+                    }
                 }
             } else {
-                echo '--- key: ' . $neededNode->key . ', data: ' . $neededNode->data . ' ---';
+                echo '--- key: ' . $neededNode->key . ', data: "' . $neededNode->data . '" ---';
                 return $neededNode;
             }            
-        } else {
-            return null;
         }
         
         return null;
