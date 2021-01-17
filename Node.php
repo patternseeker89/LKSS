@@ -62,10 +62,11 @@ class Node
             $neededNode = $this->findNodeInChildrenByKey($key, $parentNode);
             if (\is_null($neededNode)) {
                 foreach ($parentNode->children as $childNode) {
-                    $this->getNodeByKey($key, $childNode);
+                    return $this->getNodeByKey($key, $childNode);
                 }
             } else {
                 echo '--- key: ' . $neededNode->key . ', data: ' . $neededNode->data . ' ---';
+                return $neededNode;
             }            
         } else {
             return null;
