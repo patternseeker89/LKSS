@@ -11,18 +11,26 @@ class StorageTree
         $this->nodesKeys = [];
     }
     
-    public function insertNode(int $parentNodeKey, string $data): void
+    public function insertNode(int $key, ?int $parentNodeKey, string $data): void
     {
         
-        $newNode = new Node($data);
+        $newNode = new Node($key, $data);
         
-        if (\is_null($this->root)) {
+        /*if (\is_null($parentNodeKey)) {
             $this->root = $newNode;
         } else if(\is_null($this->root->getChildren())) {
             $this->root->addChild($newNode);          
         } else {
-            $parentNode = $this->getNodeByKey($parentNodeKey);
-            $parentNode->addChild($parentNode);
+            //$parentNode = $this->getNodeByKey11($parentNodeKey);
+            var_dump($parentNode);
+            //$parentNode->addChild($parentNode);
+        }*/
+        
+        if (\is_null($parentNodeKey)) {
+            $this->root = $newNode;      
+        } else {
+            $this->root->addChild($newNode);
+            $this->root->getChildren()[0]->addChild(new Node(13, '=========='));
         }
         
         $this->saveNodeKey($newNode->getKey());
@@ -33,14 +41,10 @@ class StorageTree
         $this->nodesKeys[] = $key;
     }
     
-    private function getNodeByKey(int $key): Node 
+    public function getNodeByKey11(int $key): ?Node 
     {
-        return new Node('data');     
-    }
-    
-    private function getNodeByKey1(int $key): Node 
-    {
-        return new Node('data');     
+        //return new Node('data');     
+        return $this->root->getNodeByKey($key, $this->root);
     }
     
     public function isEmpty(): bool
