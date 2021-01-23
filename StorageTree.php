@@ -48,6 +48,21 @@ class StorageTree
         
     }
     
+    public function getAllNodes(): array
+    {
+        
+    }
+    
+    public function printTree(): void
+    {
+        
+    }
+    
+    public function getPath(int $startKey int $endKey): void
+    {
+        
+    }
+    
     private function saveNodeKey(int $key): void 
     {
         $this->nodesKeys[] = $key;
