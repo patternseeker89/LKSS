@@ -32,7 +32,17 @@ class StorageTree
         
     }
     
-    public function moveNode(int $key, ?int $parentNodeKey, string $data): void
+    public function moveNode(int $key, ?int $targetNodeKey): void
+    {
+        
+    }
+    
+    public function cloneNode(int $key, ?int $targetNodeKey): void
+    {
+        
+    }
+    
+    public function cloneNodeWithoutChildren(int $key, ?int $targetNodeKey): void
     {
         
     }
