@@ -3,6 +3,7 @@
 class Node
 {
     private int $key;
+    private string $name; // Privat bank, Deposit Standart Dollar 
     private sting $type;//['standart', 'history', 'history item'] -> in ENUM object move this values!!! 'history item' -> linked list
     private sting $status;//['active', 'no active']
     private string $data = '';
