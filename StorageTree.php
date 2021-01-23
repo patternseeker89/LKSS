@@ -33,6 +33,21 @@ class StorageTree
         $this->saveNodeKey($newNode->getKey());
     }
     
+    public function deleteNode(int $key): void
+    {
+        
+    }
+    
+    public function moveNode(int $key, ?int $parentNodeKey, string $data): void
+    {
+        
+    }
+    
+    public function updateNode(int $key, string $data): void
+    {
+        
+    }
+    
     private function saveNodeKey(int $key): void 
     {
         $this->nodesKeys[] = $key;
