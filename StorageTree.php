@@ -63,6 +63,11 @@ class StorageTree
         
     }
     
+    public function getNodesNumber(): int
+    {
+        return \count($this->$nodesKeys);
+    }
+    
     private function saveNodeKey(int $key): void 
     {
         $this->nodesKeys[] = $key;
