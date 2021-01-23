@@ -62,7 +62,7 @@ class StorageTree
         
     }
     
-    public function getPath(int $startKey int $endKey): void
+    public function getPath(int $startNodeKey, int $endNodeKey): void
     {
         
     }
