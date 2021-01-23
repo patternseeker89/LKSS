@@ -20,7 +20,7 @@ class StorageTree
         if (\is_null($parentNodeKey)) {
             $this->root = $newNode;        
         } else {
-            $parentNode = $this->getNodeByKey11($parentNodeKey);
+            $parentNode = $this->getNodeByKey($parentNodeKey);
             $parentNode->addChild($newNode);
         }
         
@@ -77,14 +77,13 @@ class StorageTree
         $this->nodesKeys[] = $key;
     }
     
-    public function getNodeByKey11(int $key): ?Node 
+    public function getNodeByKey(int $key): ?Node 
     {
         if ($this->root->getKey() === $key) {    
             return $this->root;
         } else {
             return $this->root->getNodeByKey($key, $this->root);
         }
-        //return $this->root->getNodeByKey($key, $this->root);
     }
     
     public function isEmpty(): bool
