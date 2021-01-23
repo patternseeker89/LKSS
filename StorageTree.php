@@ -4,7 +4,8 @@ class StorageTree
 {
     private ?Node $root;
     private array $nodesKeys;
-    private visualizer $visualizer;
+    private Visualizer $visualizer;
+    private Storage $storage;
 
     public function __construct()
     {
@@ -70,6 +71,16 @@ class StorageTree
     public function getNodesNumber(): int
     {
         return \count($this->$nodesKeys);
+    }
+    
+    public function loadTree(): bool
+    {
+        
+    }
+    
+    public function saveTree(): bool
+    {
+        
     }
     
     private function saveNodeKey(int $key): void 
