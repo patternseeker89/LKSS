@@ -3,7 +3,10 @@
 class Node
 {
     private int $key;
+    private sting $type;//['standart', 'history'] in ENUM object move this values
+    private sting $status;//['active', 'no active']
     private string $data = '';
+    //private NodeData $data;
     private Node $parent;
     private ?array $children;
 
