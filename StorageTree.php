@@ -4,6 +4,7 @@ class StorageTree
 {
     private ?Node $root;
     private array $nodesKeys;
+    private visualizer $visualizer;
 
     public function __construct()
     {
@@ -22,13 +23,6 @@ class StorageTree
             $parentNode = $this->getNodeByKey11($parentNodeKey);
             $parentNode->addChild($newNode);
         }
-        
-        /*if (\is_null($parentNodeKey)) {
-            $this->root = $newNode;      
-        } else {
-            $this->root->addChild($newNode);
-            $this->root->getChildren()[0]->addChild(new Node(13, '=========='));
-        }*/
         
         $this->saveNodeKey($newNode->getKey());
     }
