@@ -15,17 +15,21 @@ class StorageTree
     
     public function insertNode(int $key, ?int $parentNodeKey, string $data): void
     {
-        
-        $newNode = new Node($key, $data);
-        
-        if (\is_null($parentNodeKey)) {
-            $this->root = $newNode;        
-        } else {
-            $parentNode = $this->getNodeByKey($parentNodeKey);
-            $parentNode->addChild($newNode);
+        if ($this->isUniqueKey($key)) {
+            $newNode = new Node($key, $data);
+
+            if (\is_null($parentNodeKey)) {
+                $this->root = $newNode;        
+            } else {
+                $parentNode = $this->getNodeByKey($parentNodeKey);
+                $parentNode->addChild($newNode);
+            }
+
+            $this->saveNodeKey($newNode->getKey());
         }
-        
-        $this->saveNodeKey($newNode->getKey());
+        else {
+            echo 'Error: key is not unique!';
+        }
     }
     
     public function deleteNode(int $key): void
@@ -87,8 +91,13 @@ class StorageTree
     {
         $this->nodesKeys[] = $key;
     }
+
+    private function isUniqueKey(int $key): bool 
+    {
+        return !in_array($key, $this->nodesKeys);
+    }
     
-    public function getNodeByKey(int $key): ?Node 
+    public function getNodeByKey(int $key): ?Node
     {
         if ($this->root->getKey() === $key) {    
             return $this->root;
@@ -100,5 +109,10 @@ class StorageTree
     public function isEmpty(): bool
     {
         return $this->root === null;
+    }
+
+    public  function getNodesKeys(): array
+    {
+        return $this->nodesKeys;
     }
 }
