@@ -22,6 +22,7 @@ class StorageTree
                 $this->root = $newNode;        
             } else {
                 $parentNode = $this->getNodeByKey($parentNodeKey);
+                $newNode->setParent($parentNode);
                 $parentNode->addChild($newNode);
             }
 
@@ -32,9 +33,18 @@ class StorageTree
         }
     }
     
-    public function deleteNode(int $key): void
+    public function deleteNode(int $nodeKey): void
     {
-        
+        $node = $this->getNodeByKey($nodeKey);
+
+        if (!\is_null($node)) {
+            $parent = $node->getParent();
+            if (\is_null($parent)) {
+                unset($this->root);
+            } else {
+                $parent->deleteChild($nodeKey);
+            }
+        }
     }
     
     public function moveNode(int $key, ?int $targetNodeKey): void
