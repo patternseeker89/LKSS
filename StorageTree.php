@@ -80,9 +80,30 @@ class StorageTree
         
     }
     
-    public function printTree(): void
+    public function getRoot(): ?Node
     {
-        
+        return $this->root;
+    }
+    
+    public function printChildrenLevel(Node $parentNode): void
+    {
+        foreach ($parentNode->getChildren() as $childNode) {
+            echo $childNode->getKey() . " ";
+        }
+
+        echo  "==========\n"; 
+    }
+    
+    public function printTree(Node $parentNode): void
+    {
+        if ($parentNode->haveChildren()) {
+            $this->printChildrenLevel($parentNode);
+            foreach ($parentNode->getChildren() as $childNode) {
+                if (!\is_null($childNode->getChildren())) {
+                    $this->printTree($childNode);
+                } 
+            }          
+        }
     }
     
     public function getPath(int $startNodeKey, int $endNodeKey): void

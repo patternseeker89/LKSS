@@ -49,7 +49,7 @@ class Node
         return $this->children;
     }
     
-    private function haveChildren(): bool
+    public function haveChildren(): bool
     {
         return !empty($this->children);
     }
