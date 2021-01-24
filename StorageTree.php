@@ -47,9 +47,17 @@ class StorageTree
         }
     }
     
-    public function moveNode(int $key, ?int $targetNodeKey): void
+    public function moveNode(int $nodeKey, ?int $targetNodeKey): void
     {
-        
+        $node = $this->getNodeByKey($nodeKey);
+        $targetNode = $this->getNodeByKey($targetNodeKey);
+
+        $this->deleteNode($nodeKey);
+
+        if (!\is_null($node)) {
+            $node->setParent($targetNode);
+            $targetNode->addChild($node);
+        }
     }
     
     public function cloneNode(int $key, ?int $targetNodeKey): void

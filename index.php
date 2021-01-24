@@ -32,6 +32,6 @@ $storage->insertNode(12, 2, 'test data 12');
 //$storage->insertNode(12, 2, 'test data 12');
 
 var_dump($storage);
-var_dump($storage->deleteNode(10));
+var_dump($storage->moveNode(91, 15));
 var_dump($storage);
 //var_dump($storage->getNodeByKey11(4));
