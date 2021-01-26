@@ -76,6 +76,8 @@ class Node
     }
     
     /**
+     * @TODO move this to the StorageTree class!!!!!!
+     *
      * Breadth-first search (BFS) used, my realization
      */
     public function getNodeByKey(int $key, Node $parentNode): ?Node 
