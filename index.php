@@ -36,4 +36,4 @@ var_dump($storage);
 //var_dump($storage);
 //var_dump($storage->getNodeByKey11(4));
 
-$storage->printTree($storage->getRoot());
+//$storage->printTree($storage->getRoot());

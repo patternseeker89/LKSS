@@ -63,41 +63,4 @@ class Node
     {
         return $this->data;
     }
-    
-    public function findNodeInChildrenByKey(int $key, Node $parentNode): ?Node 
-    {
-        foreach ($parentNode->children as $child) {
-            if ($child->key === $key) {
-                return $child;
-            }
-        }
-        
-        return null;
-    }
-    
-    /**
-     * @TODO move this to the StorageTree class!!!!!!
-     *
-     * Breadth-first search (BFS) used, my realization
-     */
-    public function getNodeByKey(int $key, Node $parentNode): ?Node 
-    {
-        if ($parentNode->haveChildren()) {
-            $neededNode = $this->findNodeInChildrenByKey($key, $parentNode);
-            if (\is_null($neededNode)) {
-                foreach ($parentNode->children as $childNode) {
-                    $neededNode = $this->getNodeByKey($key, $childNode);
-                    if (!\is_null($neededNode)) {
-                        return $neededNode;
-                    }
-                }
-            } else {
-                echo '--- key: ' . $neededNode->key . ', data: "' . $neededNode->data . '" ---';
-                echo "\n";
-                return $neededNode;
-            }            
-        }
-        
-        return null;
-    }
 }

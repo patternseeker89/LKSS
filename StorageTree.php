@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Apache 2.0-license
+ */
 class StorageTree
 {
     private ?Node $root;
@@ -149,7 +152,7 @@ class StorageTree
         if ($this->root->getKey() === $key) {    
             return $this->root;
         } else {
-            return $this->root->getNodeByKey($key, $this->root);
+            return $this->findNodeInTree($key, $this->root);
         }
     }
     
@@ -161,5 +164,40 @@ class StorageTree
     public  function getNodesKeys(): array
     {
         return $this->nodesKeys;
+    }
+    
+    public function findNodeInChildrenByKey(int $key, Node $parentNode): ?Node 
+    {
+        foreach ($parentNode->getChildren() as $child) {
+            if ($child->getKey() === $key) {
+                return $child;
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Breadth-first search (BFS) used, my realization
+     */
+    public function findNodeInTree(int $key, Node $parentNode): ?Node
+    {
+        if ($parentNode->haveChildren()) {
+            $neededNode = $this->findNodeInChildrenByKey($key, $parentNode);
+            if (\is_null($neededNode)) {
+                foreach ($parentNode->getChildren() as $childNode) {
+                    $neededNode = $this->findNodeInTree($key, $childNode);
+                    if (!\is_null($neededNode)) {
+                        return $neededNode;
+                    }
+                }
+            } else {
+                echo '--- key: ' . $neededNode->getKey() . ', data: "' . $neededNode->getData() . '" ---';
+                echo "\n";
+                return $neededNode;
+            }            
+        }
+        
+        return null;
     }
 }
