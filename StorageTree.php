@@ -9,6 +9,7 @@ class StorageTree
     private array $nodesKeys;
     private Visualizer $visualizer;
     private Storage $storage;
+    private $nodesList = [];
 
     public function __construct()
     {
@@ -16,10 +17,10 @@ class StorageTree
         $this->nodesKeys = [];
     }
     
-    public function insertNode(int $key, ?int $parentNodeKey, string $data): void
+    public function insertNode(int $key, ?int $parentNodeKey, string $data, int $x, int $y): void
     {
         if ($this->isUniqueKey($key)) {
-            $newNode = new Node($key, $data);
+            $newNode = new Node($key, $data, $x, $y);
 
             if (\is_null($parentNodeKey)) {
                 $this->root = $newNode;        
@@ -86,10 +87,10 @@ class StorageTree
         
     }
     
-    public function getAllNodes(): array
+    /*public function getAllNodes(): array
     {
         
-    }
+    }*/
     
     public function getRoot(): ?Node
     {
@@ -112,9 +113,48 @@ class StorageTree
             foreach ($parentNode->getChildren() as $childNode) {
                 if (!\is_null($childNode->getChildren())) {
                     $this->printTree($childNode);
-                } 
+                } else {
+                    echo  "++++++++\n";
+                }
             }          
         }
+    }
+    
+    private function getAllNodes(Node $parentNode): array
+    {
+        if ($parentNode->haveChildren()) {
+            $this->nodesList = array_merge($this->nodesList, $parentNode->getChildren());
+  
+            foreach ($parentNode->getChildren() as $childNode) {
+                if (!\is_null($childNode->getChildren())) {
+                    $this->getAllNodes($childNode);
+                } else {
+                    echo  "++++++++\n";
+                }
+            }          
+        }
+
+        return $this->nodesList;
+    }
+    
+    public function createSvgImg(): void
+    {
+        $beginSvgString = '<svg width="1500" height="1500" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100%" height="100%" fill="white" />';
+        
+        $nodes = $this->getAllNodes($this->root);
+        
+        $svgString = '<circle cx="'. $this->root->getX() .'" cy="'. $this->root->getY() .'" r="5" fill="green"/>';
+        $svgString .= '<text x="'. $this->root->getX() + 15 .'" y="'. $this->root->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'. $this->root->getKey() .'</text>';
+        
+        foreach ($nodes as $node) {
+            $svgString .= '<circle cx="'. $node->getX() .'" cy="'. $node->getY() .'" r="5" fill="green"/>';
+            $svgString .= '<text x="'. $node->getX() + 15 .'" y="'. $node->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'. $node->getKey() .'</text>';
+        }
+        
+        $endSvgString = '</svg>';
+        
+        echo $beginSvgString . $svgString . $endSvgString;
     }
     
     public function getPath(int $startNodeKey, int $endNodeKey): void
