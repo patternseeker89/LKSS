@@ -7,7 +7,7 @@ $storage = new StorageTree();
 
 $k = 10;
 
-$storage->insertNode(1, null,'test data', 20*$k, 20*$k);
+/*$storage->insertNode(1, null,'test data', 20*$k, 20*$k);
 
 $storage->insertNode(2, 1, 'test data 2', 10*$k, 30*$k);
 
@@ -29,11 +29,13 @@ $storage->insertNode(10, 9, 'test data 10', 30*$k, 70*$k);
 
 $storage->insertNode(11, 2, 'test data 11', 1*$k, 40*$k);
 
-$storage->insertNode(12, 2, 'test data 12', 15*$k, 40*$k);
+$storage->insertNode(12, 2, 'test data 12', 15*$k, 40*$k);*/
 
-//$storage->insertNode(12, 2, 'test data 12');
+//$storage->insertNode(13, 12, 'test data 13', 5*$k, 50*$k);
 
 //var_dump($storage);
+
+//$storage->saveTreeIntoFile();
 
 $storage->createSvgImg();
 
