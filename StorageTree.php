@@ -174,7 +174,8 @@ class StorageTree
             //echo '<pre>';var_dump($nodes);die();
 
             $svgString = '<circle cx="'. $this->root->getX() .'" cy="'. $this->root->getY() .'" r="'. $circleRadius .'" fill="green"/>';
-            $svgString .= '<text x="'. $this->root->getX() + 15 .'" y="'. $this->root->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'. $this->root->getKey() .'</text>';
+            $svgString .= '<text x="'. $this->root->getX() + 70 .'" y="'. $this->root->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'
+                    . $this->root->getKey() . ': '. $this->root->getData() .'</text>';
 
             foreach ($nodes as $fullNode) {
                 $currentNodes = $fullNode['nodes'];
@@ -182,7 +183,8 @@ class StorageTree
                     $svgString .=  '<line x1="'. $fullNode['parentCoordinates'][0] .'" x2="'. $node->getX() 
                             .'" y1="'. $fullNode['parentCoordinates'][1] + $circleRadius .'" y2="'. $node->getY() .'" stroke="orange" fill="transparent" stroke-width="1"/>';
                     $svgString .= '<circle cx="'. $node->getX() .'" cy="'. $node->getY() .'" r="'. $circleRadius .'" fill="green"/>';
-                    $svgString .= '<text x="'. $node->getX() + 15 .'" y="'. $node->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'. $node->getKey() .'</text>';
+                    $svgString .= '<text x="'. $node->getX() + 70 .'" y="'. $node->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'
+                        . $node->getKey() . ': '. $node->getData() .'</text>';
                 }
             }
 

@@ -31,7 +31,8 @@ $storage->insertNode(11, 2, 'test data 11', 1*$k, 40*$k);
 
 $storage->insertNode(12, 2, 'test data 12', 15*$k, 40*$k);*/
 
-//$storage->insertNode(13, 12, 'test data 13', 5*$k, 50*$k);
+//$storage->insertNode(14, 10, 'test data 14', 20*$k, 80*$k);
+$storage->insertNode(150, 15, 'test data 15', 80*$k, 100*$k);
 
 //var_dump($storage);
 
