@@ -137,19 +137,44 @@ class StorageTree
         return $this->nodesList;
     }
     
+    private function getAllNodesWithBranches(Node $parentNode): array
+    {
+        if ($parentNode->haveChildren()) {
+            $this->nodesList[] = [
+                'nodes' => $parentNode->getChildren(),
+                'parentCoordinates' => [$parentNode->getX(), $parentNode->getY()]
+            ];
+  
+            foreach ($parentNode->getChildren() as $childNode) {
+                if (!\is_null($childNode->getChildren())) {
+                    $this->getAllNodesWithBranches($childNode);
+                }
+            }          
+        }
+
+        return $this->nodesList;
+    }
+    
     public function createSvgImg(): void
     {
         $beginSvgString = '<svg width="1500" height="1500" xmlns="http://www.w3.org/2000/svg">
             <rect width="100%" height="100%" fill="white" />';
         
-        $nodes = $this->getAllNodes($this->root);
+        //$nodes = $this->getAllNodes($this->root);
+        $nodes = $this->getAllNodesWithBranches($this->root);
+        //echo '<pre>';var_dump($nodes);die();
         
         $svgString = '<circle cx="'. $this->root->getX() .'" cy="'. $this->root->getY() .'" r="5" fill="green"/>';
         $svgString .= '<text x="'. $this->root->getX() + 15 .'" y="'. $this->root->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'. $this->root->getKey() .'</text>';
         
-        foreach ($nodes as $node) {
-            $svgString .= '<circle cx="'. $node->getX() .'" cy="'. $node->getY() .'" r="5" fill="green"/>';
-            $svgString .= '<text x="'. $node->getX() + 15 .'" y="'. $node->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'. $node->getKey() .'</text>';
+        foreach ($nodes as $fullNode) {
+            $currentNodes = $fullNode['nodes'];
+            foreach ($currentNodes as $node) {
+                $svgString .=  '<line x1="'. $fullNode['parentCoordinates'][0] .'" x2="'. $node->getX() 
+                        .'" y1="'. $fullNode['parentCoordinates'][1] .'" y2="'. $node->getY() .'" stroke="orange" fill="transparent" stroke-width="1"/>';
+                $svgString .= '<circle cx="'. $node->getX() .'" cy="'. $node->getY() .'" r="5" fill="green"/>';
+                $svgString .= '<text x="'. $node->getX() + 15 .'" y="'. $node->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'. $node->getKey() .'</text>';
+            }    
         }
         
         $endSvgString = '</svg>';
