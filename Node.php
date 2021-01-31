@@ -13,10 +13,11 @@ class Node
     private ?Node $parent;
     private ?array $children;
 
-    public function __construct(int $key, string $data, int $x, int $y)
+    public function __construct(int $key, string $name, string $data, int $x, int $y)
     {
         //$this->key = rand(0, 1000000);
         $this->key = $key;
+        $this->name = $name;
         $this->x = $x;
         $this->y = $y;
         $this->data = $data;
@@ -76,5 +77,10 @@ class Node
     public function getY(): int
     {
         return $this->y;
+    }
+    
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

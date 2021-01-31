@@ -22,10 +22,10 @@ class StorageTree
         $this->saveTreeIntoFile();
     }
     
-    public function insertNode(int $key, ?int $parentNodeKey, string $data, int $x, int $y): void
+    public function insertNode(int $key, ?int $parentNodeKey, string $name, string $data, int $x, int $y): void
     {
         if ($this->isUniqueKey($key)) {
-            $newNode = new Node($key, $data, $x, $y);
+            $newNode = new Node($key, $name, $data, $x, $y);
 
             if (\is_null($parentNodeKey)) {
                 $this->root = $newNode;        
@@ -162,10 +162,10 @@ class StorageTree
         return $this->nodesList;
     }
     
-    public function createSvgImg(): void
+    public function createSvgImg(): string
     {
         if (!is_null($this->getRoot())) {
-            $circleRadius = 5;
+            $circleRadius = 10;
 
             $beginSvgString = '<svg width="1500" height="1500" xmlns="http://www.w3.org/2000/svg">
                 <rect width="100%" height="100%" fill="white" />';
@@ -173,27 +173,50 @@ class StorageTree
             $nodes = $this->getAllNodesWithBranches($this->root);
             //echo '<pre>';var_dump($nodes);die();
 
-            $svgString = '<circle cx="'. $this->root->getX() .'" cy="'. $this->root->getY() .'" r="'. $circleRadius .'" fill="green"/>';
-            $svgString .= '<text x="'. $this->root->getX() + 70 .'" y="'. $this->root->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'
-                    . $this->root->getKey() . ': '. $this->root->getData() .'</text>';
+            $svgString = '<g><title>'. $this->root->getData() .'</title>'
+                    .'<circle cx="'. $this->root->getX() .'" cy="'. $this->root->getY() 
+                    .'" r="'. $circleRadius .'" fill="green"/></g>';
+            $svgString .= '<text x="'. $this->root->getX() + 50 .'" y="'
+                    . $this->root->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'
+                    . $this->root->getName() .'</text>';
 
             foreach ($nodes as $fullNode) {
                 $currentNodes = $fullNode['nodes'];
                 foreach ($currentNodes as $node) {
                     $svgString .=  '<line x1="'. $fullNode['parentCoordinates'][0] .'" x2="'. $node->getX() 
                             .'" y1="'. $fullNode['parentCoordinates'][1] + $circleRadius .'" y2="'. $node->getY() .'" stroke="orange" fill="transparent" stroke-width="1"/>';
-                    $svgString .= '<circle cx="'. $node->getX() .'" cy="'. $node->getY() .'" r="'. $circleRadius .'" fill="green"/>';
-                    $svgString .= '<text x="'. $node->getX() + 70 .'" y="'. $node->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'
-                        . $node->getKey() . ': '. $node->getData() .'</text>';
+                    $svgString .= '<g><title>'. $node->getData() .'</title>'
+                            .'<circle cx="'. $node->getX() .'" cy="'. $node->getY() .'" r="'. $circleRadius .'" fill="green"/></g>';
+                    $svgString .= '<text x="'. $node->getX() + 50 .'" y="'. $node->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'
+                        . $node->getName() .'</text>';
                 }
             }
 
             $endSvgString = '</svg>';
 
-            echo $beginSvgString . $svgString . $endSvgString;
+            return  $beginSvgString . $svgString . $endSvgString;
         } else {
-            echo 'root is empty';
+            return 'root is empty';
         }
+    }
+    
+    public function generateHtmlPage(): void
+    {
+        $begin = '<!DOCTYPE html>
+                    <html>
+                      <head>
+                        <title>Canvas tutorial</title>
+                      </head>
+                      <body>';
+        
+        $svg = $this->createSvgImg();
+        
+        $end = '  </body>
+                </html>';
+        
+        $page = $begin . $svg . $end;
+        
+        file_put_contents('test.html', $page);
     }
     
     public function saveTreeIntoFile(): void
