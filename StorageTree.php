@@ -167,14 +167,14 @@ class StorageTree
         if (!is_null($this->getRoot())) {
             $circleRadius = 10;
 
-            $beginSvgString = '<svg width="1500" height="1500" xmlns="http://www.w3.org/2000/svg">
+            $beginSvgString = '<svg id="field" width="1500" height="1500" xmlns="http://www.w3.org/2000/svg">
                 <rect width="100%" height="100%" fill="white" />';
 
             $nodes = $this->getAllNodesWithBranches($this->root);
             //echo '<pre>';var_dump($nodes);die();
 
             $svgString = '<g><title>'. $this->root->getData() .'</title>'
-                    .'<circle cx="'. $this->root->getX() .'" cy="'. $this->root->getY() 
+                    .'<circle id="333" cx="'. $this->root->getX() .'" cy="'. $this->root->getY() 
                     .'" r="'. $circleRadius .'" fill="green"/></g>';
             $svgString .= '<text x="'. $this->root->getX() + 50 .'" y="'
                     . $this->root->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'
@@ -211,10 +211,45 @@ class StorageTree
         
         $svg = $this->createSvgImg();
         
-        $end = '  </body>
+        $js = '<script>
+//                            document.getElementById("333").onmousedown = function() {
+//                                this.setAttribute("cx", 50);
+//                            }             
+//                            
+//                            document.getElementById("333").onmousemove = function() {
+//                                this.setAttribute("cx", event.pageX);
+//                                this.setAttribute("cy", event.pageY);
+//                                console.log(event.pageX+":"+event.pageY);
+//                            }  
+                            let isDrawing = false;
+                            let node = document.getElementById("333"); 
+                            let currentNode; 
+
+                            node.addEventListener("mousedown", function()  {
+                            console.log(11);
+                              isDrawing = true;
+                              currentNode = this;
+                            });
+
+                            document.getElementById("field").addEventListener("mousemove", function() {
+                              if (isDrawing === true) {
+                              console.log(22);
+                              console.log(Math.round(event.pageX));
+                                currentNode.setAttribute("cx", Math.round(event.pageX));
+                                currentNode.setAttribute("cy", Math.round(event.pageY));
+                              }
+                            });
+                           document.getElementById("field").addEventListener("mouseup", function() {
+                            console.log(33);
+                              isDrawing = false;
+                               });
+                        </script>';
+
+        $end = '       
+                </body>
                 </html>';
         
-        $page = $begin . $svg . $end;
+        $page = $begin . $svg . $js . $end;
         
         file_put_contents('test.html', $page);
     }
