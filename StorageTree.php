@@ -249,7 +249,9 @@ class StorageTree
                 </body>
                 </html>';
         
-        $page = $begin . $svg . $js . $end;
+//        $page = $begin . $svg . $js . $end;
+        
+        $page = $begin . $svg . $end;
         
         file_put_contents('test.html', $page);
     }
