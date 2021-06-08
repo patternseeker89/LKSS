@@ -256,20 +256,20 @@ class StorageTree
         
         $page = $begin . $svg . $end;
         
-        file_put_contents('test.html', $page);
+        file_put_contents('data/test.html', $page);
     }
     
     public function saveTreeIntoFile(): void
     {
         $serializedTree = serialize($this->root);
         
-        file_put_contents('tree.data', $serializedTree);
+        file_put_contents('data/tree.data', $serializedTree);
     }
 
     private function loadTreeFromFile()
     {
-        if (file_exists('tree.data')) {
-            return unserialize(file_get_contents('tree.data'));
+        if (file_exists('data/tree.data')) {
+            return unserialize(file_get_contents('data/tree.data'));
         } else {
             return null;
         }

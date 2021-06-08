@@ -17,6 +17,8 @@ $storage->insertNode(3, 1, 'Privatbank', 'test data 3', 30*$k, 30*$k);
 
 $storage->insertNode(4, 3, 'Accounts', 'test data 4', 20*$k, 40*$k);
 
+$storage->insertNode(41, 3, 'Deposits', 'fssdf fsf', 30*$k, 40*$k);
+
 $storage->insertNode(5, 3, 'Cards', 'test data 5', 40*$k, 40*$k);
 
 $storage->insertNode(6, 5, 'Internet card', 'test data 6', 30*$k, 50*$k);
