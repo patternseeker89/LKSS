@@ -1,9 +1,11 @@
 <?php
 
-require_once 'Node.php';
-require_once 'StorageTree.php';
+//declare(strict_types=1);
 
-$storage = new StorageTree();
+require_once 'vendor/autoload.php';
+
+
+$storage = new LKSS\StorageTree();
 
 $k = 10;
 
@@ -22,6 +24,8 @@ $storage->insertNode(6, 5, 'Internet card', 'test data 6', 30*$k, 50*$k);
 $storage->insertNode(7, 5, 'Universal card', 'test data 7', 50*$k, 50*$k);
 
 $storage->insertNode(8, 7, 'PIN code', '2341', 60*$k, 40*$k);
+
+$storage->insertNode(10, 7, 'Old PIN code', '2341', 60*$k, 30*$k);
 
 $storage->insertNode(9, 2, 'Text test',
         'Тултип, – всплывающая подсказка при наведении курсора, есть во многих программных продуктах.

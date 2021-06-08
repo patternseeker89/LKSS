@@ -1,5 +1,7 @@
 <?php
 
+namespace LKSS;
+
 class Node
 {
     private int $key;

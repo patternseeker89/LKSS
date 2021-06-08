@@ -1,11 +1,14 @@
 <?php
 
+namespace LKSS;
+
 /**
  * Apache 2.0-license
  */
 class StorageTree
 {
-    private ?Node $root;
+//    private ?Node $root;
+    private $root;
     private array $nodesKeys;
     private Visualizer $visualizer;
     private Storage $storage;
@@ -263,7 +266,7 @@ class StorageTree
         file_put_contents('tree.data', $serializedTree);
     }
 
-    private function loadTreeFromFile(): ?Node
+    private function loadTreeFromFile()
     {
         if (file_exists('tree.data')) {
             return unserialize(file_get_contents('tree.data'));
