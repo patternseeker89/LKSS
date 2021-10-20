@@ -1,0 +1,22 @@
+digraph g{  
+  "My banks" -> "PRIVATBANK";
+  "My banks" -> "PUMB";
+  "My banks" -> "PINBANK";
+  "My banks" -> "MONOBANK";
+  "My banks" -> "UKRGAZBANK";
+
+  "PRIVATBANK" -> "Deposits";
+  "Deposits" -> "Dollar";
+  "Dollar" -> "#1";
+  "Dollar" -> "#2";
+  "Dollar" -> "#3";
+  "Dollar" -> "#4";
+  "#1" -> "Data end: 20.03.2022\nSum: 6991$";
+  "#2" -> "991$";
+  "#3" -> "Data end: 20.03.2023\nSum: 6991$";
+  "#4" -> "Data end: 20.03.2020\nSum: 6991$";
+  "Data end: 20.03.2020\nSum: 6991$" -> "History";
+  "History" -> "Data11: 20.03.2020\nSum: 6991$";
+  "Data11: 20.03.2020\nSum: 6991$" -> "Data1\nSum: 691$";
+  "Data1\nSum: 691$" -> "3$";
+}

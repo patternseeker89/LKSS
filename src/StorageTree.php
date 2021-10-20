@@ -13,9 +13,13 @@ class StorageTree
     private Visualizer $visualizer;
     private Storage $storage;
     private $nodesList = [];
+    
+    private SvgImage $svgImage;
 
-    public function __construct()
+    public function __construct(SvgImage $svgImage)
     {
+        $this->svgImage = $svgImage;
+        
         $this->root = $this->loadTreeFromFile();
         $this->nodesKeys = [];
     }
@@ -144,8 +148,8 @@ class StorageTree
 
         return $this->nodesList;
     }
-    
-    private function getAllNodesWithBranches(?Node $parentNode): array
+
+    public function getAllNodesWithBranches(?Node $parentNode): array
     {
         if (!is_null($parentNode)) {
             if ($parentNode->haveChildren()) {
@@ -164,45 +168,7 @@ class StorageTree
 
         return $this->nodesList;
     }
-    
-    public function createSvgImg(): string
-    {
-        if (!is_null($this->getRoot())) {
-            $circleRadius = 10;
 
-            $beginSvgString = '<svg id="field" width="1500" height="1500" xmlns="http://www.w3.org/2000/svg">
-                <rect width="100%" height="100%" fill="white" />';
-
-            $nodes = $this->getAllNodesWithBranches($this->root);
-            //echo '<pre>';var_dump($nodes);die();
-
-            $svgString = '<g><title>'. $this->root->getData() .'</title>'
-                    .'<circle id="333" cx="'. $this->root->getX() .'" cy="'. $this->root->getY() 
-                    .'" r="'. $circleRadius .'" fill="green"/></g>';
-            $svgString .= '<text x="'. $this->root->getX() + 50 .'" y="'
-                    . $this->root->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'
-                    . $this->root->getName() .'</text>';
-
-            foreach ($nodes as $fullNode) {
-                $currentNodes = $fullNode['nodes'];
-                foreach ($currentNodes as $node) {
-                    $svgString .=  '<line x1="'. $fullNode['parentCoordinates'][0] .'" x2="'. $node->getX() 
-                            .'" y1="'. $fullNode['parentCoordinates'][1] + $circleRadius .'" y2="'. $node->getY() .'" stroke="orange" fill="transparent" stroke-width="1"/>';
-                    $svgString .= '<g><title>'. $node->getData() .'</title>'
-                            .'<circle cx="'. $node->getX() .'" cy="'. $node->getY() .'" r="'. $circleRadius .'" fill="green"/></g>';
-                    $svgString .= '<text x="'. $node->getX() + 50 .'" y="'. $node->getY() + 5 .'" font-size="16" text-anchor="middle" fill="black">'
-                        . $node->getName() .'</text>';
-                }
-            }
-
-            $endSvgString = '</svg>';
-
-            return  $beginSvgString . $svgString . $endSvgString;
-        } else {
-            return 'root is empty';
-        }
-    }
-    
     public function generateHtmlPage(): void
     {
         $begin = '<!DOCTYPE html>
@@ -212,7 +178,7 @@ class StorageTree
                       </head>
                       <body>';
         
-        $svg = $this->createSvgImg();
+        $svg = $this->svgImage->create($this);
         
         $js = '<script>
 //                            document.getElementById("333").onmousedown = function() {

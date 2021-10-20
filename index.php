@@ -5,7 +5,7 @@
 require_once 'vendor/autoload.php';
 
 
-$storage = new LKSS\StorageTree();
+$storage = new LKSS\StorageTree(new LKSS\SvgImage());
 
 $k = 10;
 

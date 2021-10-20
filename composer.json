@@ -8,7 +8,10 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "the-bit-bang/php-svg-framework-svgf": "dev-master",
+        "meyfa/php-svg": "dev-main"
+    },
         "autoload": {
         "psr-4": { "LKSS\\": "src"}
     }
