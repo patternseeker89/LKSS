@@ -25,25 +25,25 @@ class StorageTree
     {
         $this->saveTreeIntoFile();
     }
-    
-    public function insertNode(int $key, ?int $parentNodeKey, string $name, string $data, int $x, int $y): void
-    {
-        if ($this->isUniqueKey($key)) {
-            $newNode = new Node($key, $name, $data, $x, $y);
 
-            if (\is_null($parentNodeKey)) {
+    public function insertNode(?string $parentKey, string $name, string $data): void
+    {
+        //if ($this->isUniqueKey($key)) {
+            $newNode = new Node($name, $data);
+
+            if (\is_null($parentKey)) {
                 $this->root = $newNode;        
             } else {
-                $parentNode = $this->getNodeByKey($parentNodeKey);
+                $parentNode = $this->getNodeByKey($parentKey);
                 $newNode->setParent($parentNode);
                 $parentNode->addChild($newNode);
             }
 
             $this->saveNodeKey($newNode->getKey());
-        }
-        else {
-            echo 'Error: key is not unique!';
-        }
+//        }
+//        else {
+//            echo 'Error: key is not unique!';
+//        }
     }
     
     public function deleteNode(int $nodeKey): void
@@ -112,7 +112,7 @@ class StorageTree
         }
     }
 
-    public function showNode(int $key): void
+    public function showNode(string $key): void
     {
         $node = $this->findNodeInTree($key, $this->getRoot());
 
@@ -202,17 +202,17 @@ class StorageTree
         
     }
     
-    private function saveNodeKey(int $key): void 
+    private function saveNodeKey(string $key): void 
     {
         $this->nodesKeys[] = $key;
     }
 
-    private function isUniqueKey(int $key): bool 
+    private function isUniqueKey(string $key): bool 
     {
         return !in_array($key, $this->nodesKeys);
     }
     
-    public function getNodeByKey(int $key): ?Node
+    public function getNodeByKey(string $key): ?Node
     {
         if ($this->root->getKey() === $key) {    
             return $this->root;
@@ -231,7 +231,7 @@ class StorageTree
         return $this->nodesKeys;
     }
     
-    public function findNodeInChildrenByKey(int $key, Node $parentNode): ?Node 
+    public function findNodeInChildrenByKey(string $key, Node $parentNode): ?Node 
     {
         foreach ($parentNode->getChildren() as $child) {
             if ($child->getKey() === $key) {
@@ -245,7 +245,7 @@ class StorageTree
     /**
      * Breadth-first search (BFS) used, my realization
      */
-    public function findNodeInTree(int $key, Node $parentNode): ?Node
+    public function findNodeInTree(string $key, Node $parentNode): ?Node
     {
         if ($parentNode->haveChildren()) {
             $neededNode = $this->findNodeInChildrenByKey($key, $parentNode);

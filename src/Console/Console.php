@@ -48,7 +48,20 @@ class Console {
         switch ($command) {
             case substr($command, 0, strlen(ConsoleCommand::SHOW_NODE)) == ConsoleCommand::SHOW_NODE:
                 $nodeKey = substr($command, strlen(ConsoleCommand::SHOW_NODE) + 1);
-                $this->storage->showNode((int)$nodeKey);
+                $this->storage->showNode($nodeKey);
+                break;
+            case substr($command, 0, strlen(ConsoleCommand::INSERT_NODE)) == ConsoleCommand::INSERT_NODE:
+                $paramsString = substr($command, strlen(ConsoleCommand::INSERT_NODE) + 1);
+                $params = explode(' ', $paramsString);
+                //var_dump($paramsString, $params);
+                if (count($params) == 3) {
+                    $parentKey = $params[0];
+                    $name = $params[1];
+                    $data = $params[2];
+                    $this->storage->insertNode($parentKey, $name, $data);
+                } else {
+                    echo "Dont valid params!\n";
+                }
                 break;
             default:
                echo $command . "\n";

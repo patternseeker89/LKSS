@@ -4,39 +4,33 @@ namespace LKSS;
 
 class Node
 {
-    private int $key;
+    private string $key;
     private string $name; // Privat bank, Deposit Standart Dollar
-    private int $x = 0;
-    private int $y = 0;
     private sting $type;//['standart', 'history', 'history item'] -> in ENUM object move this values!!! 'history item' -> linked list
     private sting $status;//['active', 'no active']
     private string $data = '';
-    //private NodeData $data;
     private ?Node $parent;
     private ?array $children;
 
-    public function __construct(int $key, string $name, string $data, int $x, int $y)
+    public function __construct(string $name, string $data)
     {
-        //$this->key = rand(0, 1000000);
-        $this->key = $key;
+        $this->key = bin2hex(random_bytes(18));
         $this->name = $name;
-        $this->x = $x;
-        $this->y = $y;
         $this->data = $data;
         $this->children = null;
         $this->parent = null;
     }
-    
+
     public function setParent(Node $parent): void
     {
         $this->parent = $parent;
     }
-    
+
     public function addChild(Node $childNode): void
     {
         $this->children[] = $childNode;
     }
-    
+
     public function deleteChild(int $childNodeKey): void
     {
         foreach ($this->children as $index => $child) {
@@ -45,17 +39,17 @@ class Node
             }
         }
     }
-    
-    public function getKey(): int
+
+    public function getKey(): string
     {
         return $this->key;
     }
-    
+
     public function getChildren(): ?array
     {
         return $this->children;
     }
-    
+
     public function haveChildren(): bool
     {
         return !empty($this->children);
@@ -65,22 +59,12 @@ class Node
     {
         return $this->parent;
     }
-    
+
     public function getData(): string
     {
         return $this->data;
     }
-    
-    public function getX(): int
-    {
-        return $this->x;
-    }
-    
-    public function getY(): int
-    {
-        return $this->y;
-    }
-    
+
     public function getName(): string
     {
         return $this->name;
