@@ -2,9 +2,6 @@
 
 namespace LKSS;
 
-/**
- * Apache 2.0-license
- */
 class StorageTree
 {
 //    private ?Node $root;
@@ -75,15 +72,7 @@ class StorageTree
             $targetNode->addChild($node);
         }
     }
-    
-    
-    /*
-    https://ru.wikipedia.org/wiki/SVG
-    Интерактивность. На каждый отдельный элемент и на целое изображение можно повесить обработчик событий (клик, перемещение, нажатие клавиши и т.д), 
-    таким образом, пользователь может управлять рисунком (например — перемещать мышкой некоторые элементы[1]).
-    https://svg-art.ru/
-    https://svg-art.ru/?p=1253
-    */
+
     public function cloneNode(int $key, ?int $targetNodeKey): void
     {
         
@@ -99,39 +88,30 @@ class StorageTree
         
     }
     
-    /*public function getAllNodes(): array
-    {
-        
-    }*/
-    
     public function getRoot(): ?Node
     {
         return $this->root;
     }
-    
-    public function printChildrenLevel(Node $parentNode): void
-    {
-        foreach ($parentNode->getChildren() as $childNode) {
-            echo $childNode->getKey() . " ";
-        }
 
-        echo  "==========\n"; 
-    }
-    
-    public function printTree(Node $parentNode): void
+    public function printTree(Node $parentNode, string $separator): void
     {
+        $separator = $separator . "----";
+        echo $separator . "#" . $parentNode->getKey() . " " . $parentNode->getName()
+            . "\n";
         if ($parentNode->haveChildren()) {
-            $this->printChildrenLevel($parentNode);
             foreach ($parentNode->getChildren() as $childNode) {
                 if (!\is_null($childNode->getChildren())) {
-                    $this->printTree($childNode);
+                    $this->printTree($childNode, $separator);
                 } else {
-                    echo  "++++++++\n";
+                    $separator = $separator . "----";
+                    echo $separator . "#" . $childNode->getKey() . " " . $childNode->getName()
+                        . "\n";
+                    $separator = substr($separator, 0, strlen($separator) -4);
                 }
-            }          
+            }   
         }
     }
-    
+
     private function getAllNodes(Node $parentNode): array
     {
         if ($parentNode->haveChildren()) {
@@ -169,62 +149,6 @@ class StorageTree
         return $this->nodesList;
     }
 
-    public function generateHtmlPage(): void
-    {
-        $begin = '<!DOCTYPE html>
-                    <html>
-                      <head>
-                        <title>Canvas tutorial</title>
-                      </head>
-                      <body>';
-        
-        $svg = $this->svgImage->create($this);
-        
-        $js = '<script>
-//                            document.getElementById("333").onmousedown = function() {
-//                                this.setAttribute("cx", 50);
-//                            }             
-//                            
-//                            document.getElementById("333").onmousemove = function() {
-//                                this.setAttribute("cx", event.pageX);
-//                                this.setAttribute("cy", event.pageY);
-//                                console.log(event.pageX+":"+event.pageY);
-//                            }  
-                            let isDrawing = false;
-                            let node = document.getElementById("333"); 
-                            let currentNode; 
-
-                            node.addEventListener("mousedown", function()  {
-                            console.log(11);
-                              isDrawing = true;
-                              currentNode = this;
-                            });
-
-                            document.getElementById("field").addEventListener("mousemove", function() {
-                              if (isDrawing === true) {
-                              console.log(22);
-                              console.log(Math.round(event.pageX));
-                                currentNode.setAttribute("cx", Math.round(event.pageX));
-                                currentNode.setAttribute("cy", Math.round(event.pageY));
-                              }
-                            });
-                           document.getElementById("field").addEventListener("mouseup", function() {
-                            console.log(33);
-                              isDrawing = false;
-                               });
-                        </script>';
-
-        $end = '       
-                </body>
-                </html>';
-        
-//        $page = $begin . $svg . $js . $end;
-        
-        $page = $begin . $svg . $end;
-        
-        file_put_contents('data/test.html', $page);
-    }
-    
     public function saveTreeIntoFile(): void
     {
         $serializedTree = serialize($this->root);

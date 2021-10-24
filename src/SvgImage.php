@@ -81,4 +81,68 @@ class SvgImage {
         }
     }
     
+    /*
+    https://ru.wikipedia.org/wiki/SVG
+    Интерактивность. На каждый отдельный элемент и на целое изображение можно повесить обработчик событий (клик, перемещение, нажатие клавиши и т.д), 
+    таким образом, пользователь может управлять рисунком (например — перемещать мышкой некоторые элементы[1]).
+    https://svg-art.ru/
+    https://svg-art.ru/?p=1253
+    */
+    
+        public function generateHtmlPage(): void
+    {
+        $begin = '<!DOCTYPE html>
+                    <html>
+                      <head>
+                        <title>Canvas tutorial</title>
+                      </head>
+                      <body>';
+        
+        $svg = $this->svgImage->create($this);
+        
+        $js = '<script>
+//                            document.getElementById("333").onmousedown = function() {
+//                                this.setAttribute("cx", 50);
+//                            }             
+//                            
+//                            document.getElementById("333").onmousemove = function() {
+//                                this.setAttribute("cx", event.pageX);
+//                                this.setAttribute("cy", event.pageY);
+//                                console.log(event.pageX+":"+event.pageY);
+//                            }  
+                            let isDrawing = false;
+                            let node = document.getElementById("333"); 
+                            let currentNode; 
+
+                            node.addEventListener("mousedown", function()  {
+                            console.log(11);
+                              isDrawing = true;
+                              currentNode = this;
+                            });
+
+                            document.getElementById("field").addEventListener("mousemove", function() {
+                              if (isDrawing === true) {
+                              console.log(22);
+                              console.log(Math.round(event.pageX));
+                                currentNode.setAttribute("cx", Math.round(event.pageX));
+                                currentNode.setAttribute("cy", Math.round(event.pageY));
+                              }
+                            });
+                           document.getElementById("field").addEventListener("mouseup", function() {
+                            console.log(33);
+                              isDrawing = false;
+                               });
+                        </script>';
+
+        $end = '       
+                </body>
+                </html>';
+        
+//        $page = $begin . $svg . $js . $end;
+        
+        $page = $begin . $svg . $end;
+        
+        file_put_contents('data/test.html', $page);
+    }
+    
 }
