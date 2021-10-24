@@ -7,8 +7,8 @@ class StorageTree
 //    private ?Node $root;
     private $root;
     private array $nodesKeys;
-    private Visualizer $visualizer;
-    private Storage $storage;
+    //private Visualizer $visualizer;
+    //private Storage $storage;
     private $nodesList = [];
     
     private SvgImage $svgImage;
@@ -108,7 +108,24 @@ class StorageTree
                         . "\n";
                     $separator = substr($separator, 0, strlen($separator) -4);
                 }
-            }   
+            }
+        }
+    }
+
+    public function showNode(int $key): void
+    {
+        $node = $this->findNodeInTree($key, $this->getRoot());
+
+        if (!is_null($node)) {
+            echo "\n";
+            echo "key: " . $node->getKey() . "\n";
+            echo "name: " . $node->getName() . "\n";
+            echo "data: " . $node->getData() . "\n";
+            echo "childs: ";
+            echo is_array($node->getChildren()) ? count($node->getChildren()) : 0 . "\n";
+            echo "\n" . "\n";
+        } else {
+            echo "Node does not exist for this key!\n";
         }
     }
 
@@ -240,8 +257,6 @@ class StorageTree
                     }
                 }
             } else {
-                echo '--- key: ' . $neededNode->getKey() . ', data: "' . $neededNode->getData() . '" ---';
-                echo "\n";
                 return $neededNode;
             }            
         }

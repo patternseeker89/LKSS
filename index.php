@@ -1,8 +1,8 @@
 <?php
 
-namespace LKSS;
+declare(strict_types=1);
 
-//declare(strict_types=1);
+namespace LKSS;
 
 require_once 'vendor/autoload.php';
 
