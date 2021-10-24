@@ -8,7 +8,7 @@ require_once 'vendor/autoload.php';
 
 $storage = new StorageTree(new SvgImage());
 
-        $storage->insertNode(null, 'My Banks','test data');
+        //$storage->insertNode(null, 'My Banks','test data');
 //
 //        $storage->insertNode(2, 1, 'PUMB','test data 2', 10*$k, 30*$k);
 //

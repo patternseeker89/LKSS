@@ -35,8 +35,12 @@ class StorageTree
                 $this->root = $newNode;        
             } else {
                 $parentNode = $this->getNodeByKey($parentKey);
-                $newNode->setParent($parentNode);
-                $parentNode->addChild($newNode);
+                if (!is_null($parentNode)) {
+                    $newNode->setParent($parentNode);
+                    $parentNode->addChild($newNode);
+                } else {
+                    echo "Error: parent key is wrong!\n";
+                }
             }
 
             $this->saveNodeKey($newNode->getKey());
@@ -169,7 +173,7 @@ class StorageTree
     public function saveTreeIntoFile(): void
     {
         $serializedTree = serialize($this->root);
-        
+
         file_put_contents('data/tree.data', $serializedTree);
     }
 

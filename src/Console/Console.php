@@ -34,7 +34,9 @@ class Console {
                 case ConsoleCommand::SHOW_TREE:
                     echo ".\n";
                     echo "|\n";
-                    $this->storage->printTree($this->storage->getRoot(), "|");
+                    if (!is_null($this->storage->getRoot())) {
+                        $this->storage->printTree($this->storage->getRoot(), "|");
+                    }
                     echo "\n";
                     break;
                 default:
@@ -53,9 +55,8 @@ class Console {
             case substr($command, 0, strlen(ConsoleCommand::INSERT_NODE)) == ConsoleCommand::INSERT_NODE:
                 $paramsString = substr($command, strlen(ConsoleCommand::INSERT_NODE) + 1);
                 $params = explode(' ', $paramsString);
-                //var_dump($paramsString, $params);
                 if (count($params) == 3) {
-                    $parentKey = $params[0];
+                    $parentKey = ($params[0] == "null") ? null : $params[0];
                     $name = $params[1];
                     $data = $params[2];
                     $this->storage->insertNode($parentKey, $name, $data);
