@@ -2,26 +2,26 @@
 
 namespace LKSS\Console;
 
-use LKSS\StorageTree;
+use LKSS\Console\Commands\InsertNodeCommand;
+use LKSS\Console\Commands\ShowNodeCommand;
+use LKSS\Console\Commands\ShowTreeCommand;
 
-/**
- * Description of Console
- *
- * @author porfirovskiy
- */
-class Console {
+class Console 
+{
+    private InsertNodeCommand $insertNodeCommand;
+    private ShowNodeCommand $showNodeCommand;
+    private ShowTreeCommand $showTreeCommand;
 
-    public const SHOW_TREE = 'show tree';
-    public const EXIT = 'exit';
-    
-    private StorageTree $storage;
-    
     public function __construct(
-        StorageTree $storage
+        InsertNodeCommand $insertNodeCommand,
+        ShowNodeCommand $showNodeComman,
+        ShowTreeCommand $showTreeCommand
     ) {
-        $this->storage = $storage;
+        $this->insertNodeCommand = $insertNodeCommand;
+        $this->showNodeCommand = $showNodeComman;
+        $this->showTreeCommand = $showTreeCommand;
     }
-
+    
     public function bash(): void
     {
         while (true) {
@@ -32,12 +32,7 @@ class Console {
                     exit(0);
                     break;
                 case ConsoleCommand::SHOW_TREE:
-                    echo ".\n";
-                    echo "|\n";
-                    if (!is_null($this->storage->getRoot())) {
-                        $this->storage->printTree($this->storage->getRoot(), "|");
-                    }
-                    echo "\n";
+                    $this->showTreeCommand->execute($command);
                     break;
                 default:
                    $this->handleCommand($command);
@@ -49,20 +44,10 @@ class Console {
     {
         switch ($command) {
             case substr($command, 0, strlen(ConsoleCommand::SHOW_NODE)) == ConsoleCommand::SHOW_NODE:
-                $nodeKey = substr($command, strlen(ConsoleCommand::SHOW_NODE) + 1);
-                $this->storage->showNode($nodeKey);
+                $this->showNodeCommand->execute($command);
                 break;
             case substr($command, 0, strlen(ConsoleCommand::INSERT_NODE)) == ConsoleCommand::INSERT_NODE:
-                $paramsString = substr($command, strlen(ConsoleCommand::INSERT_NODE) + 1);
-                $params = explode(' ', $paramsString);
-                if (count($params) == 3) {
-                    $parentKey = ($params[0] == "null") ? null : $params[0];
-                    $name = $params[1];
-                    $data = $params[2];
-                    $this->storage->insertNode($parentKey, $name, $data);
-                } else {
-                    echo "Dont valid params!\n";
-                }
+                $this->insertNodeCommand->execute($command);
                 break;
             default:
                echo $command . "\n";

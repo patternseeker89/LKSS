@@ -6,6 +6,16 @@ namespace LKSS;
 
 require_once 'vendor/autoload.php';
 
+//echo system("nano > `tty`");
+
+//system("nano /home/porfirovskiy/test.txt > `tty`");
+//echo file_get_contents('/home/porfirovskiy/test.txt');
+
+//
+//https://www.php.net/manual/ru/function.system.php
+//https://unix.stackexchange.com/questions/337777/php-interactive-script-that-calls-nano
+
+//die();
 $storage = new StorageTree(new SvgImage());
 
         //$storage->insertNode(null, 'My Banks','test data');
@@ -33,6 +43,9 @@ $storage = new StorageTree(new SvgImage());
 //        В svg тултип реализуется с помощью парного тега <title> Текст подсказки </title>',
 //                10*$k, 50*$k);
 
-$console = new Console\Console($storage);
+$insertNodeCommand = new Console\Commands\InsertNodeCommand($storage);
+$showNodeCommand = new Console\Commands\ShowNodeCommand($storage);
+$showTreeCommand = new Console\Commands\ShowTreeCommand($storage);
+$console = new Console\Console($insertNodeCommand, $showNodeCommand, $showTreeCommand);
 $app = new App($console);
 $app->run();

@@ -4,12 +4,8 @@ namespace LKSS;
 
 use LKSS\Console\Console;
 
-/**
- * Description of App
- *
- * @author porfirovskiy
- */
-class App {
+class App 
+{
     private Console $console;
     
     public function __construct(

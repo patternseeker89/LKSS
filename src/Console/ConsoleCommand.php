@@ -8,7 +8,8 @@ namespace LKSS\Console;
  *
  * @author porfirovskiy
  */
-class ConsoleCommand {
+class ConsoleCommand
+{
     public const SHOW_TREE = 'show tree';
     public const EXIT = 'exit';
     public const INSERT_NODE = 'insert node';
