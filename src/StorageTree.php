@@ -4,21 +4,11 @@ namespace LKSS;
 
 class StorageTree
 {
-//    private ?Node $root;
     private $root;
-    private array $nodesKeys;
-    //private Visualizer $visualizer;
-    //private Storage $storage;
-    private $nodesList = [];
-    
-    private SvgImage $svgImage;
 
-    public function __construct(SvgImage $svgImage)
+    public function __construct()
     {
-        $this->svgImage = $svgImage;
-        
         $this->root = $this->loadTreeFromFile();
-        $this->nodesKeys = [];
     }
     
     public function __destruct()
@@ -28,42 +18,35 @@ class StorageTree
 
     public function insertNode(?string $parentKey, string $name, string $data): void
     {
-        //if ($this->isUniqueKey($key)) {
-            $newNode = new Node($name, $data);
+        $newNode = new Node($name, $data);
 
-            if (\is_null($parentKey)) {
-                $this->root = $newNode;        
+        if (\is_null($parentKey)) {
+            $this->root = $newNode;
+        } else {
+            $parentNode = $this->getNodeByKey($parentKey);
+            if (!is_null($parentNode)) {
+                $newNode->setParent($parentNode);
+                $parentNode->addChild($newNode);
             } else {
-                $parentNode = $this->getNodeByKey($parentKey);
-                if (!is_null($parentNode)) {
-                    $newNode->setParent($parentNode);
-                    $parentNode->addChild($newNode);
-                } else {
-                    echo "Error: parent key is wrong!\n";
-                }
+                echo "Error: parent key is wrong!\n";
             }
-
-            $this->saveNodeKey($newNode->getKey());
-//        }
-//        else {
-//            echo 'Error: key is not unique!';
-//        }
+        }
     }
-    
-    public function deleteNode(int $nodeKey): void
+
+    public function deleteNode(string $key): void
     {
-        $node = $this->getNodeByKey($nodeKey);
+        $node = $this->getNodeByKey($key);
 
         if (!\is_null($node)) {
             $parent = $node->getParent();
             if (\is_null($parent)) {
                 unset($this->root);
             } else {
-                $parent->deleteChild($nodeKey);
+                $parent->deleteChild($key);
             }
         }
     }
-    
+
     public function moveNode(int $nodeKey, ?int $targetNodeKey): void
     {
         $node = $this->getNodeByKey($nodeKey);
@@ -86,12 +69,18 @@ class StorageTree
     {
         
     }
-    
-    public function updateNode(int $key, string $data): void
+
+    public function updateNode(string $key, string $data): void
     {
-        
+        $node = $this->getNodeByKey($key);
+
+        if (!\is_null($node)) {
+            $node->setData($data);
+        } else {
+            echo "Node does not exist for this key!\n";
+        }
     }
-    
+
     public function getRoot(): ?Node
     {
         return $this->root;
@@ -116,60 +105,6 @@ class StorageTree
         }
     }
 
-    public function showNode(string $key): void
-    {
-        $node = $this->findNodeInTree($key, $this->getRoot());
-
-        if (!is_null($node)) {
-            echo "\n";
-            echo "key: " . $node->getKey() . "\n";
-            echo "name: " . $node->getName() . "\n";
-            echo "data: " . $node->getData() . "\n";
-            echo "childs: ";
-            echo is_array($node->getChildren()) ? count($node->getChildren()) : 0 . "\n";
-            echo "\n" . "\n";
-        } else {
-            echo "Node does not exist for this key!\n";
-        }
-    }
-
-    private function getAllNodes(Node $parentNode): array
-    {
-        if ($parentNode->haveChildren()) {
-            $this->nodesList = array_merge($this->nodesList, $parentNode->getChildren());
-  
-            foreach ($parentNode->getChildren() as $childNode) {
-                if (!\is_null($childNode->getChildren())) {
-                    $this->getAllNodes($childNode);
-                } else {
-                    echo  "++++++++\n";
-                }
-            }          
-        }
-
-        return $this->nodesList;
-    }
-
-    public function getAllNodesWithBranches(?Node $parentNode): array
-    {
-        if (!is_null($parentNode)) {
-            if ($parentNode->haveChildren()) {
-                $this->nodesList[] = [
-                    'nodes' => $parentNode->getChildren(),
-                    'parentCoordinates' => [$parentNode->getX(), $parentNode->getY()]
-                ];
-
-                foreach ($parentNode->getChildren() as $childNode) {
-                    if (!\is_null($childNode->getChildren())) {
-                        $this->getAllNodesWithBranches($childNode);
-                    }
-                }          
-            }
-        }
-
-        return $this->nodesList;
-    }
-
     public function saveTreeIntoFile(): void
     {
         $serializedTree = serialize($this->root);
@@ -191,11 +126,6 @@ class StorageTree
         
     }
     
-    public function getNodesNumber(): int
-    {
-        return \count($this->$nodesKeys);
-    }
-    
     public function loadTree(): bool
     {
         
@@ -204,16 +134,6 @@ class StorageTree
     public function saveTree(): bool
     {
         
-    }
-    
-    private function saveNodeKey(string $key): void 
-    {
-        $this->nodesKeys[] = $key;
-    }
-
-    private function isUniqueKey(string $key): bool 
-    {
-        return !in_array($key, $this->nodesKeys);
     }
     
     public function getNodeByKey(string $key): ?Node
@@ -228,11 +148,6 @@ class StorageTree
     public function isEmpty(): bool
     {
         return $this->root === null;
-    }
-
-    public  function getNodesKeys(): array
-    {
-        return $this->nodesKeys;
     }
     
     public function findNodeInChildrenByKey(string $key, Node $parentNode): ?Node 

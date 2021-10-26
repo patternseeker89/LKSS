@@ -6,8 +6,8 @@ class Node
 {
     private string $key;
     private string $name; // Privat bank, Deposit Standart Dollar
-    private sting $type;//['standart', 'history', 'history item'] -> in ENUM object move this values!!! 'history item' -> linked list
-    private sting $status;//['active', 'no active']
+    private string $type;//['standart', 'history', 'history item'] -> in ENUM object move this values!!! 'history item' -> linked list
+    private string $status;//['active', 'no active']
     private string $data = '';
     private ?Node $parent;
     private ?array $children;
@@ -25,16 +25,21 @@ class Node
     {
         $this->parent = $parent;
     }
+    
+        public function setData(string $data): void
+    {
+        $this->data = $data;
+    }
 
     public function addChild(Node $childNode): void
     {
         $this->children[] = $childNode;
     }
 
-    public function deleteChild(int $childNodeKey): void
+    public function deleteChild(string $childKey): void
     {
         foreach ($this->children as $index => $child) {
-            if ($child->key === $childNodeKey) {
+            if ($child->key === $childKey) {
                 unset($this->children[$index]);
             }
         }
