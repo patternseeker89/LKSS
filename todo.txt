@@ -1,7 +1,7 @@
 1. Синхронизация нескольких локальных хранилищ.
 
 2. Добавление в ноду текстового файла
-    lkss add node 897 "Comment from forum astro.net" /home/texts/first.txt 22 45
+    insert node 897 "Comment from forum astro.net" /home/texts/first.txt
 
 ==========================
 
