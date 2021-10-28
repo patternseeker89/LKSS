@@ -47,16 +47,17 @@ class StorageTree
         }
     }
 
-    public function moveNode(int $nodeKey, ?int $targetNodeKey): void
+    public function moveNode(string $nodeKey, string $targetNodeKey): void
     {
         $node = $this->getNodeByKey($nodeKey);
         $targetNode = $this->getNodeByKey($targetNodeKey);
 
-        $this->deleteNode($nodeKey);
-
-        if (!\is_null($node)) {
+        if (!\is_null($node) && !\is_null($targetNode)) {
+            $this->deleteNode($nodeKey);
             $node->setParent($targetNode);
             $targetNode->addChild($node);
+        } else {
+            echo "Wrong current or target node key!\n";
         }
     }
 
@@ -80,25 +81,39 @@ class StorageTree
             echo "Node does not exist for this key!\n";
         }
     }
+    
+    public function renameNode(string $key, string $newName): void
+    {
+        $node = $this->getNodeByKey($key);
+
+        if (!\is_null($node)) {
+            $node->setName($newName);
+        } else {
+            echo "Node does not exist for this key!\n";
+        }
+    }
 
     public function getRoot(): ?Node
     {
         return $this->root;
     }
 
+    /**
+     * @todo Move in separate class!!!
+     */
     public function printTree(Node $parentNode, string $separator): void
     {
         $separator = $separator . "----";
-        echo $separator . "#" . $parentNode->getKey() . " " . $parentNode->getName()
-            . "\n";
+        echo $separator . $parentNode->getName() . " " 
+                . "[" . $parentNode->getKey(). "]" .  "\n";
         if ($parentNode->haveChildren()) {
             foreach ($parentNode->getChildren() as $childNode) {
                 if (!\is_null($childNode->getChildren())) {
                     $this->printTree($childNode, $separator);
                 } else {
                     $separator = $separator . "----";
-                    echo $separator . "#" . $childNode->getKey() . " " . $childNode->getName()
-                        . "\n";
+                    echo $separator . $childNode->getName() . " " 
+                . "[" . $childNode->getKey(). "]" .  "\n";
                     $separator = substr($separator, 0, strlen($separator) -4);
                 }
             }
@@ -181,5 +196,21 @@ class StorageTree
         }
         
         return null;
+    }
+
+    public function getCountOfNodes(Node $parentNode, int $counter = 0): int
+    {
+        $counter++;
+        if ($parentNode->haveChildren()) {
+            foreach ($parentNode->getChildren() as $childNode) {
+                if (!\is_null($childNode->getChildren())) {
+                    $counter = $this->getCountOfNodes($childNode, $counter);
+                } else {
+                    $counter++;
+                }
+            }  
+        }
+
+        return $counter;
     }
 }

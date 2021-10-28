@@ -5,6 +5,7 @@ namespace LKSS\Console\Commands;
 interface Command 
 {
     public const SHOW_TREE = 'show tree';
+    public const SHOW_STORAGE_STATUS = 'show storage status';
     public const INSERT_NODE = 'insert node';
     public const UPDATE_NODE = 'update node';
     public const SHOW_NODE = 'show node';

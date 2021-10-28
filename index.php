@@ -13,6 +13,9 @@ $showNodeCommand = new Console\Commands\ShowNodeCommand($storage);
 $showTreeCommand = new Console\Commands\ShowTreeCommand($storage);
 $deleteNodeCommand = new Console\Commands\DeleteNodeCommand($storage);
 $updateNodeCommand = new Console\Commands\UpdateNodeCommand($storage);
+$renameNodeCommand = new Console\Commands\RenameNodeCommand($storage);
+$moveNodeCommand = new Console\Commands\MoveNodeCommand($storage);
+$showStorageStatusCommand = new Console\Commands\ShowStorageStatusCommand($storage);
 
 $console = new Console\Console(
     $insertNodeCommand,
@@ -20,6 +23,9 @@ $console = new Console\Console(
     $showTreeCommand,
     $deleteNodeCommand,
     $updateNodeCommand,
+    $renameNodeCommand,
+    $moveNodeCommand,
+    $showStorageStatusCommand,
 );
 
 $app = new App($console);

@@ -14,7 +14,7 @@ class Node
 
     public function __construct(string $name, string $data)
     {
-        $this->key = bin2hex(random_bytes(18));
+        $this->key = bin2hex(random_bytes(10));
         $this->name = $name;
         $this->data = $data;
         $this->children = null;
@@ -26,9 +26,14 @@ class Node
         $this->parent = $parent;
     }
     
-        public function setData(string $data): void
+    public function setData(string $data): void
     {
         $this->data = $data;
+    }
+    
+    public function setName(string $newName): void
+    {
+        $this->name = $newName;
     }
 
     public function addChild(Node $childNode): void

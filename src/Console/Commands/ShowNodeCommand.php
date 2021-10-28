@@ -23,7 +23,7 @@ class ShowNodeCommand implements Command
             echo "\n";
             echo "key: " . $node->getKey() . "\n";
             echo "name: " . $node->getName() . "\n";
-            echo "data: " . $node->getData() . "\n";
+            echo "data: \n" . $node->getData() . "\n";
             echo "childs: ";
             echo is_array($node->getChildren()) ? count($node->getChildren()) : 0 . "\n";
             echo "\n" . "\n";
