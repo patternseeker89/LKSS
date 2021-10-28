@@ -3,44 +3,40 @@
 namespace LKSS\Console;
 
 use LKSS\Console\Commands\InsertNodeCommand;
-use LKSS\Console\Commands\ShowNodeCommand;
-use LKSS\Console\Commands\ShowTreeCommand;
 use LKSS\Console\Commands\Command;
 use LKSS\Console\Commands\DeleteNodeCommand;
 use LKSS\Console\Commands\UpdateNodeCommand;
 use LKSS\Console\Commands\RenameNodeCommand;
 use LKSS\Console\Commands\MoveNodeCommand;
 use LKSS\Console\Commands\ShowStorageStatusCommand;
+use LKSS\Console\ConsoleFactory;
 
 class Console
 {
     private InsertNodeCommand $insertNodeCommand;
-    private ShowNodeCommand $showNodeCommand;
-    private ShowTreeCommand $showTreeCommand;
     private DeleteNodeCommand $deleteNodeCommand;
     private UpdateNodeCommand $updateNodeCommand;
     private RenameNodeCommand $renameNodeCommand;
     private MoveNodeCommand $moveNodeCommand;
     private ShowStorageStatusCommand $showStorageStatusCommand;
+    private ConsoleFactory $consoleFactory;
 
     public function __construct(
         InsertNodeCommand $insertNodeCommand,
-        ShowNodeCommand $showNodeComman,
-        ShowTreeCommand $showTreeCommand,
         DeleteNodeCommand $deleteNodeCommand,
         UpdateNodeCommand $updateNodeCommand,
         RenameNodeCommand $renameNodeCommand,
         MoveNodeCommand $moveNodeCommand,
-        ShowStorageStatusCommand $showStorageStatusCommand
+        ShowStorageStatusCommand $showStorageStatusCommand,
+        ConsoleFactory $consoleFactory
     ) {
         $this->insertNodeCommand = $insertNodeCommand;
-        $this->showNodeCommand = $showNodeComman;
-        $this->showTreeCommand = $showTreeCommand;
         $this->deleteNodeCommand = $deleteNodeCommand;
         $this->updateNodeCommand = $updateNodeCommand;
         $this->renameNodeCommand = $renameNodeCommand;
         $this->moveNodeCommand = $moveNodeCommand;
         $this->showStorageStatusCommand =$showStorageStatusCommand;
+        $this->consoleFactory = $consoleFactory;
     }
     
     public function bash(): void
@@ -53,7 +49,7 @@ class Console
                     exit(0);
                     break;
                 case Command::SHOW_TREE:
-                    $this->showTreeCommand->execute($command);
+                    $this->consoleFactory->create(Command::SHOW_TREE)->execute($command);
                     break;
                 case Command::SHOW_STORAGE_STATUS:
                     $this->showStorageStatusCommand->execute($command);
@@ -64,11 +60,16 @@ class Console
         }
     }
 
+    /**
+     * 
+     * USE SIMPLE FACTORY !!!!!!
+     */
+    
     public function handleCommandWithParams(string $command): void
     {
         switch ($command) {
             case substr($command, 0, strlen(Command::SHOW_NODE)) == Command::SHOW_NODE:
-                $this->showNodeCommand->execute($command);
+                $this->consoleFactory->create(Command::SHOW_NODE)->execute($command);
                 break;
             case substr($command, 0, strlen(Command::INSERT_NODE)) == Command::INSERT_NODE:
                 $this->insertNodeCommand->execute($command);
