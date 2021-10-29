@@ -61,11 +61,20 @@ class StorageTree
         }
     }
 
-    public function cloneNode(int $key, ?int $targetNodeKey): void
+    public function cloneNode(string $key, string $targetNodeKey): void
     {
-        
+        $node = $this->getNodeByKey($key);
+        $targetNode = $this->getNodeByKey($targetNodeKey);
+
+        if (!\is_null($node) && !\is_null($targetNode)) {
+            $clonedNode = clone $node;
+            $clonedNode->setParent($targetNode);
+            $targetNode->addChild($clonedNode);
+        } else {
+            echo "Wrong current or target node key!\n";
+        }
     }
-    
+
     public function cloneNodeWithoutChildren(int $key, ?int $targetNodeKey): void
     {
         

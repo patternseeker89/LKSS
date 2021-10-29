@@ -14,7 +14,7 @@ class Node
 
     public function __construct(string $name, string $data)
     {
-        $this->key = bin2hex(random_bytes(10));
+        $this->key = $this->generateRandomKey();
         $this->name = $name;
         $this->data = $data;
         $this->children = null;
@@ -78,5 +78,15 @@ class Node
     public function getName(): string
     {
         return $this->name;
+    }
+    
+    private function generateRandomKey(): string
+    {
+        return bin2hex(random_bytes(10));
+    }
+
+    public function __clone()
+    {
+        $this->key = $this->generateRandomKey();
     }
 }
