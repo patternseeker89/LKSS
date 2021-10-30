@@ -1,11 +1,11 @@
 <?php
 
-namespace LKSS\Console\Commands;
+namespace LKSS\Console\Commands\Compound;
 
 use LKSS\StorageTree;
-use LKSS\Console\Commands\Command;
+use LKSS\Console\Commands\Interfaces\CompoundCommand;
 
-class RenameNodeCommand implements Command
+class UpdateNodeCommand implements CompoundCommand
 {
     private StorageTree $storage;
 
@@ -16,19 +16,18 @@ class RenameNodeCommand implements Command
 
     public function execute(string $command): void
     {
-        $paramsString = substr($command, strlen(Command::RENAME_NODE) + 1);
+        $paramsString = substr($command, strlen(self::UPDATE_NODE) + 1);
         $params = explode(' ', $paramsString);
         if (count($params) == 1) {
             $key = ($params[0] == "null") ? null : $params[0];
-            $newName = $this->setNewNameByEditor();
-            $this->storage->renameNode($key, $newName);
+            $data = $this->setNodeData();
+            $this->storage->updateNode($key, $data);
         } else {
             echo "Dont valid params!\n";
         }
     }
 
-    //setTextByEditor()
-    protected function setNewNameByEditor(): string
+    protected function setNodeData(): string
     {
         $file = '/tmp/test.txt';
         system("echo '' > /tmp/test.txt && nano $file > `tty`");

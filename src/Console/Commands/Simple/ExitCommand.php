@@ -1,10 +1,11 @@
 <?php
 
-namespace LKSS\Console\Commands;
+namespace LKSS\Console\Commands\Simple;
 
 use LKSS\StorageTree;
+use LKSS\Console\Commands\Interfaces\SimpleCommand;
 
-class ExitCommand implements Command
+class ExitCommand implements SimpleCommand
 {
     private StorageTree $storage;
 
@@ -13,7 +14,7 @@ class ExitCommand implements Command
         $this->storage = $storage;
     }
 
-    public function execute(string $command): void
+    public function execute(): void
     {
         exit(0);
     }

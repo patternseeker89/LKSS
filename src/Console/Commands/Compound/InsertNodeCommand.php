@@ -1,11 +1,11 @@
 <?php
 
-namespace LKSS\Console\Commands;
+namespace LKSS\Console\Commands\Compound;
 
 use LKSS\StorageTree;
-use LKSS\Console\Commands\Command;
+use LKSS\Console\Commands\Interfaces\CompoundCommand;
 
-class UpdateNodeCommand implements Command
+class InsertNodeCommand implements CompoundCommand
 {
     private StorageTree $storage;
 
@@ -16,17 +16,19 @@ class UpdateNodeCommand implements Command
 
     public function execute(string $command): void
     {
-        $paramsString = substr($command, strlen(Command::UPDATE_NODE) + 1);
+        $paramsString = substr($command, strlen(self::INSERT_NODE) + 1);
         $params = explode(' ', $paramsString);
-        if (count($params) == 1) {
-            $key = ($params[0] == "null") ? null : $params[0];
+        if (count($params) == 2) {
+            $parentKey = ($params[0] == "null") ? null : $params[0];
+            $name = $params[1];
             $data = $this->setNodeData();
-            $this->storage->updateNode($key, $data);
+            $this->storage->insertNode($parentKey, $name, $data);
         } else {
             echo "Dont valid params!\n";
         }
     }
 
+    //protected function setTextByEditor();
     protected function setNodeData(): string
     {
         $file = '/tmp/test.txt';

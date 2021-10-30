@@ -1,10 +1,11 @@
 <?php
 
-namespace LKSS\Console\Commands;
+namespace LKSS\Console\Commands\Compound;
 
 use LKSS\StorageTree;
+use LKSS\Console\Commands\Interfaces\CompoundCommand;
 
-class DeleteNodeCommand implements Command
+class DeleteNodeCommand implements CompoundCommand
 {
     private StorageTree $storage;
 
@@ -15,7 +16,7 @@ class DeleteNodeCommand implements Command
 
     public function execute(string $command): void
     {
-        $nodeKey = substr($command, strlen(Command::DELETE_NODE) + 1);
+        $nodeKey = substr($command, strlen(self::DELETE_NODE) + 1);
         $this->storage->deleteNode($nodeKey);
     }
 }

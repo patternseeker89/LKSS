@@ -2,7 +2,8 @@
 
 namespace LKSS;
 
-use LKSS\Console\CommandFactory;
+use LKSS\Console\Commands\Factories\SimpleCommandFactory;
+use LKSS\Console\Commands\Factories\CompoundCommandFactory;
 use LKSS\Console\Console;
 
 class App 
@@ -12,9 +13,10 @@ class App
     public function __construct()
     {
         $storage = new StorageTree(new SvgImage());
-        $consoleFactory = new CommandFactory($storage);
+        $simpleCommandFactory = new SimpleCommandFactory($storage);
+        $compoundCommandFactory = new CompoundCommandFactory($storage);
 
-        $console = new Console($consoleFactory);
+        $console = new Console($simpleCommandFactory, $compoundCommandFactory);
 
         $this->console = $console;
     }

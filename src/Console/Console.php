@@ -2,16 +2,22 @@
 
 namespace LKSS\Console;
 
-use LKSS\Console\Commands\Command;
-use LKSS\Console\CommandFactory;
+use LKSS\Console\Commands\Interfaces\SimpleCommand;
+use LKSS\Console\Commands\Interfaces\CompoundCommand;
+use LKSS\Console\Commands\Factories\SimpleCommandFactory;
+use LKSS\Console\Commands\Factories\CompoundCommandFactory;
 
 class Console
 {
-    private CommandFactory $commandFactory;
+    private SimpleCommandFactory $simpleCommandFactory;
+    private CompoundCommandFactory $compoundCommandFactory;
 
-    public function __construct(CommandFactory $consoleFactory)
-    {
-        $this->commandFactory = $consoleFactory;
+    public function __construct(
+        SimpleCommandFactory $simpleCommandFactory,
+        CompoundCommandFactory $compoundCommandFactory
+    ) {
+        $this->simpleCommandFactory = $simpleCommandFactory;
+        $this->compoundCommandFactory = $compoundCommandFactory;
     }
 
     public function bash(): void
@@ -20,44 +26,44 @@ class Console
             $command = readline("> ");
 
             switch ($command) {
-                case Command::EXIT:
-                    $this->commandFactory->create(Command::EXIT)->execute($command);
+                case SimpleCommand::EXIT:
+                    $this->simpleCommandFactory->create(SimpleCommand::EXIT)->execute($command);
                     break;
-                case Command::SHOW_TREE:
-                    $this->commandFactory->create(Command::SHOW_TREE)->execute($command);
+                case SimpleCommand::SHOW_TREE:
+                    $this->simpleCommandFactory->create(SimpleCommand::SHOW_TREE)->execute($command);
                     break;
-                case Command::SHOW_STORAGE_STATUS:
-                    $this->commandFactory->create(Command::SHOW_STORAGE_STATUS)->execute($command);
+                case SimpleCommand::SHOW_STORAGE_STATUS:
+                    $this->simpleCommandFactory->create(SimpleCommand::SHOW_STORAGE_STATUS)->execute($command);
                     break;
                 default:
-                   $this->handleCommandWithParams($command);
+                   $this->handleCompoundCommand($command);
             }
         }
     }
 
-    public function handleCommandWithParams(string $command): void
+    public function handleCompoundCommand(string $command): void
     {
         switch ($command) {
-            case substr($command, 0, strlen(Command::SHOW_NODE)) == Command::SHOW_NODE:
-                $this->commandFactory->create(Command::SHOW_NODE)->execute($command);
+            case substr($command, 0, strlen(CompoundCommand::SHOW_NODE)) == CompoundCommand::SHOW_NODE:
+                $this->compoundCommandFactory->create(CompoundCommand::SHOW_NODE)->execute($command);
                 break;
-            case substr($command, 0, strlen(Command::INSERT_NODE)) == Command::INSERT_NODE:
-                $this->commandFactory->create(Command::INSERT_NODE)->execute($command);
+            case substr($command, 0, strlen(CompoundCommand::INSERT_NODE)) == CompoundCommand::INSERT_NODE:
+                $this->compoundCommandFactory->create(CompoundCommand::INSERT_NODE)->execute($command);
                 break;
-            case substr($command, 0, strlen(Command::DELETE_NODE)) == Command::DELETE_NODE:
-                $this->commandFactory->create(Command::DELETE_NODE)->execute($command);
+            case substr($command, 0, strlen(CompoundCommand::DELETE_NODE)) == CompoundCommand::DELETE_NODE:
+                $this->compoundCommandFactory->create(CompoundCommand::DELETE_NODE)->execute($command);
                 break;
-            case substr($command, 0, strlen(Command::UPDATE_NODE)) == Command::UPDATE_NODE:
-                $this->commandFactory->create(Command::UPDATE_NODE)->execute($command);
+            case substr($command, 0, strlen(CompoundCommand::UPDATE_NODE)) == CompoundCommand::UPDATE_NODE:
+                $this->compoundCommandFactory->create(CompoundCommand::UPDATE_NODE)->execute($command);
                 break;
-            case substr($command, 0, strlen(Command::RENAME_NODE)) == Command::RENAME_NODE:
-                $this->commandFactory->create(Command::RENAME_NODE)->execute($command);
+            case substr($command, 0, strlen(CompoundCommand::RENAME_NODE)) == CompoundCommand::RENAME_NODE:
+                $this->compoundCommandFactory->create(CompoundCommand::RENAME_NODE)->execute($command);
                 break;
-            case substr($command, 0, strlen(Command::MOVE_NODE)) == Command::MOVE_NODE:
-                $this->commandFactory->create(Command::MOVE_NODE)->execute($command);
+            case substr($command, 0, strlen(CompoundCommand::MOVE_NODE)) == CompoundCommand::MOVE_NODE:
+                $this->compoundCommandFactory->create(CompoundCommand::MOVE_NODE)->execute($command);
                 break;
-            case substr($command, 0, strlen(Command::CLONE_NODE)) == Command::CLONE_NODE:
-                $this->commandFactory->create(Command::CLONE_NODE)->execute($command);
+            case substr($command, 0, strlen(CompoundCommand::CLONE_NODE)) == CompoundCommand::CLONE_NODE:
+                $this->compoundCommandFactory->create(CompoundCommand::CLONE_NODE)->execute($command);
                 break;
             default:
                echo $command . "\n";

@@ -1,11 +1,11 @@
 <?php
 
-namespace LKSS\Console\Commands;
+namespace LKSS\Console\Commands\Compound;
 
 use LKSS\StorageTree;
-use LKSS\Console\Commands\Command;
+use LKSS\Console\Commands\Interfaces\CompoundCommand;
 
-class ShowNodeCommand implements Command
+class ShowNodeCommand implements CompoundCommand
 {
     private StorageTree $storage;
 
@@ -16,7 +16,7 @@ class ShowNodeCommand implements Command
 
     public function execute(string $command): void
     {
-        $nodeKey = substr($command, strlen(Command::SHOW_NODE) + 1);
+        $nodeKey = substr($command, strlen(self::SHOW_NODE) + 1);
         $node = $this->storage->getNodeByKey($nodeKey);
 
         if (!is_null($node)) {
