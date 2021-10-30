@@ -19,8 +19,10 @@ class MoveNodeCommand implements CompoundCommand
         $paramsString = substr($command, strlen(self::MOVE_NODE) + 1);
         $params = explode(' ', $paramsString);
         if (count($params) == 2) {
-            $nodeKey = ($params[0] == "null") ? null : $params[0];
-            $targetNodeKey = $params[1];
+            $commandHandler = new \LKSS\Console\Commands\CommandHandler();
+            $nodeKeyParam = $commandHandler->getFirstParam($command, self::MOVE_NODE);
+            $nodeKey = ($nodeKeyParam == "null") ? null : $nodeKeyParam;
+            $targetNodeKey = $commandHandler->getSecondParam($command, self::MOVE_NODE);
             $this->storage->moveNode($nodeKey, $targetNodeKey);
         } else {
             echo "Dont valid params!\n";

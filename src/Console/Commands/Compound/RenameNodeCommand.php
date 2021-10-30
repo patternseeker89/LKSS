@@ -16,10 +16,13 @@ class RenameNodeCommand implements CompoundCommand
 
     public function execute(string $command): void
     {
+        $commandHandler = new \LKSS\Console\Commands\CommandHandler();
+
         $paramsString = substr($command, strlen(self::RENAME_NODE) + 1);
         $params = explode(' ', $paramsString);
         if (count($params) == 1) {
-            $key = ($params[0] == "null") ? null : $params[0];
+            $keyParam = $commandHandler->getFirstParam($command, self::RENAME_NODE);
+            $key = ($keyParam == "null") ? null : $keyParam;
             $newName = $this->setNewNameByEditor();
             $this->storage->renameNode($key, $newName);
         } else {

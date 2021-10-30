@@ -5,13 +5,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
  */
 
-namespace LKSS\Console;
+namespace LKSS\Console\Commands\Validation;
 
 /**
- * Description of CommandParamsHandler
+ * Description of RegexBuilder
  *
  * @author porfirovskiy
  */
-class CommandParamsHandler {
+class RegexBuilder {
     //put your code here
 }
