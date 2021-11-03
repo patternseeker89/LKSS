@@ -2,7 +2,7 @@
 
 namespace LKSS\Console\Commands\Validation;
 
-class ParamType implements Rule
+class ParamType
 {
     public const SIMPLE = 'simple';
     public const COMPOSITE = 'composite';

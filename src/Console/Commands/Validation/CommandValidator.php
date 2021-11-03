@@ -6,7 +6,7 @@ use LKSS\Console\Commands\Validation\Rules\Rule;
 use LKSS\Console\Commands\CommandHandler;
 
 class CommandValidator
-{
+{   
     private CommandHandler $commandHandler;
 
     public function __construct()
@@ -24,6 +24,10 @@ class CommandValidator
         $commandParams = $this->commandHandler->getListOfParams($command, '');
         $ruleParams = $rule->getParamsList();
 
+        
+        
+        
+        
         if (count($ruleParams) != count($commandParams)) {
             echo 'Wrong count of command params.';
         }

@@ -6,6 +6,7 @@ use LKSS\Console\Commands\Interfaces\SimpleCommand;
 use LKSS\Console\Commands\Interfaces\CompoundCommand;
 use LKSS\Console\Commands\Factories\SimpleCommandFactory;
 use LKSS\Console\Commands\Factories\CompoundCommandFactory;
+use LKSS\Console\Commands\Validation\RegexExpressionBuilder;
 
 class Console
 {
@@ -18,6 +19,16 @@ class Console
     ) {
         $this->simpleCommandFactory = $simpleCommandFactory;
         $this->compoundCommandFactory = $compoundCommandFactory;
+
+        $builder = new RegexExpressionBuilder();
+        $exp = $builder->createRegexExpression()
+                ->addSimpleParamExpression(true)
+                ->addCompositeParamExpression(true)
+                ->addCompositeParamExpression(true)
+                ->addSimpleParamExpression(false)
+                ->getRegexExpression();
+        
+        var_dump($exp);die();
     }
 
     public function bash(): void

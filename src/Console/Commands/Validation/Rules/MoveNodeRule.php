@@ -10,10 +10,14 @@ class MoveNodeRule extends AbstractRule
 
     public function getParamsList(): array
     {
-        return [
-            'simple',
-            'simple',
-            'composite',
-        ];
+        //return ['simple,compositem, simple'];
+        //return 'simple,composite, simple';
+        return ['simple', 'composite', 'simple'];
+        
+//        return [
+//            'simple',
+//            'simple',
+//            'composite',
+//        ];
     }
 }
