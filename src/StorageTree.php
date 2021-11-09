@@ -67,6 +67,9 @@ class StorageTree
         $targetNode = $this->getNodeByKey($targetNodeKey);
 
         if (!\is_null($node) && !\is_null($targetNode)) {
+            
+            //@TODO maybe need create new Node() with existed node params(name, data)?
+            
             $clonedNode = clone $node;
             $clonedNode->setParent($targetNode);
             $targetNode->addChild($clonedNode);
