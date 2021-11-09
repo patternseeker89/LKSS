@@ -4,21 +4,55 @@ namespace LKSS\Console\Commands\Validation;
 
 use LKSS\Console\Commands\Validation\Rules\Rule;
 use LKSS\Console\Commands\CommandHandler;
+use LKSS\Console\Commands\Validation\ParamType;
 
 class CommandValidator
-{   
+{
     private CommandHandler $commandHandler;
+    private RegexExpressionBuilder $builder;
 
     public function __construct()
     {
         $this->commandHandler = new CommandHandler();
+        $this->builder = new RegexExpressionBuilder();
     }
 
     public function isValid(string $command, Rule $rule): bool
     {
-        $this->parseRule($command, $rule);
+        $regexExpression = $this->geRuleRegexExpression($command, $rule);
+        
+        //next check command string on rule regex: is valid?
+        
+        var_dump($regexExpression);die();
+        
+        return true;
     }
 
+    public function geRuleRegexExpression(string $command, Rule $rule): ?string
+    {
+        $ruleParams = $rule->getParamsList();
+        if (!empty($ruleParams)) {
+            $builder = $this->builder->createRegexExpression();
+            foreach ($ruleParams as $key => $param) {
+                $withSpaceSymbol = true;
+                if (count($ruleParams) == ($key + 1)) {
+                    $withSpaceSymbol = false;
+                }
+
+                if ($param == ParamType::SIMPLE) {
+                    $builder->addSimpleParamExpression($withSpaceSymbol);
+                } elseif ($param == ParamType::COMPOSITE) {
+                    $builder->addCompositeParamExpression($withSpaceSymbol);
+                }
+            }
+            $regexExpression = $builder->getRegexExpression();
+        } else {
+            $regexExpression = null;
+        }
+
+        return $regexExpression;
+    }
+    
     public function parseRule(string $command, Rule $rule): array
     {
         $commandParams = $this->commandHandler->getListOfParams($command, '');
@@ -53,28 +87,5 @@ class CommandValidator
             default:
                 throw new Exception('Wrong command type passed.');
         }
-    }
-
-    /**
-     * @TODO make regex
-     */
-    public function isCompositeType(string $param): bool
-    {
-        $firstSymbol = substr($param, 1);
-        $lastSymbol = substr($param, strlen($param) - 1);
-
-        if ($firstSymbol == '"' && $lastSymbol == '"') {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-        /**
-     * @TODO make regex
-     */
-    public function isSimpleType(string $param): bool
-    {
-        return true;
     }
 }

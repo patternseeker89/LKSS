@@ -27,6 +27,10 @@ class CommandHandler
         return $this->parse($commandString, $command);
     }
 
+    /**
+     * 
+     * @TODO with regular expression
+     */
     public function getFirstParam(string $commandString, string $command): string
     {
         $params = $this->parse($commandString, $command);

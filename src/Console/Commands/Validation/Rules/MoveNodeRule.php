@@ -12,7 +12,7 @@ class MoveNodeRule extends AbstractRule
     {
         //return ['simple,compositem, simple'];
         //return 'simple,composite, simple';
-        return ['simple', 'composite', 'simple'];
+        return ['simple', 'composite'];
         
 //        return [
 //            'simple',
