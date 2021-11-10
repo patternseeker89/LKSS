@@ -20,17 +20,9 @@ class Console
         $this->simpleCommandFactory = $simpleCommandFactory;
         $this->compoundCommandFactory = $compoundCommandFactory;
 
-//        $builder = new RegexExpressionBuilder();
-//        $exp = $builder->createRegexExpression()
-//                ->addSimpleParamExpression(true)
-//                ->addCompositeParamExpression(true)
-//                ->addCompositeParamExpression(true)
-//                ->addSimpleParamExpression(false)
-//                ->getRegexExpression();
-
-        $validator = new Commands\Validation\CommandValidator();
-        $result = $validator->isValid('f gg', new Commands\Validation\Rules\MoveNodeRule());
-        var_dump($result);die();
+//        $validator = new Commands\Validation\CommandValidator();
+//        $result = $validator->isValid('f gg', new Commands\Validation\Rules\MoveNodeRule());
+//        var_dump($result);die();
     }
 
     public function bash(): void
