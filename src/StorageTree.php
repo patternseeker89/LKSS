@@ -136,13 +136,13 @@ class StorageTree
     {
         $serializedTree = serialize($this->root);
 
-        file_put_contents('data/tree.data', $serializedTree);
+        file_put_contents('data/storage.data', $serializedTree);
     }
 
     private function loadTreeFromFile()
     {
-        if (file_exists('data/tree.data')) {
-            return unserialize(file_get_contents('data/tree.data'));
+        if (file_exists('data/storage.data')) {
+            return unserialize(file_get_contents('data/storage.data'));
         } else {
             return null;
         }

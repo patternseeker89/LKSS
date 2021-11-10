@@ -17,15 +17,12 @@ class CommandValidator
         $this->builder = new RegexExpressionBuilder();
     }
 
-    public function isValid(string $command, Rule $rule): bool
+    public function isValid(string $command, string $commandName, Rule $rule): bool
     {
         $regexExpression = $this->geRuleRegexExpression($command, $rule);
-        
-        //next check command string on rule regex: is valid?
-        
-        var_dump($regexExpression);die();
-        
-        return true;
+        $commandParams = $this->getCommandParams($command, $commandName);
+
+        return $this->isMatchesTheRule($commandParams, $regexExpression);
     }
 
     public function geRuleRegexExpression(string $command, Rule $rule): ?string
@@ -52,40 +49,14 @@ class CommandValidator
 
         return $regexExpression;
     }
-    
-    public function parseRule(string $command, Rule $rule): array
+
+    protected function getCommandParams(string $command, string $commandName): string
     {
-        $commandParams = $this->commandHandler->getListOfParams($command, '');
-        $ruleParams = $rule->getParamsList();
-
-        
-        
-        
-        
-        if (count($ruleParams) != count($commandParams)) {
-            echo 'Wrong count of command params.';
-        }
-
-        foreach ($params as $number => $type) {
-            $param = $this->commandHandler->getParamByNumber(
-                $command,
-                $rule->getCommandName(),
-                $number
-            );
-
-            if (!$this->isValidType($param, $type)) {
-                echo 'Wrong param type.';
-            }
-        }
+        return substr($command, strlen($commandName) + 1);
     }
 
-    public function isValidType(string $param, string $type): bool
+    protected function isMatchesTheRule(string $commandParams, string $regexExpression): bool
     {
-        switch ($type) {
-            case ParamType::SIMPLE: return $this->isSimpleType($param);
-            case ParamType::COMPOSITE: return $this->isCompositeType($param);
-            default:
-                throw new Exception('Wrong command type passed.');
-        }
+        return (bool)preg_match('/' . $regexExpression . '/', $commandParams);
     }
 }
