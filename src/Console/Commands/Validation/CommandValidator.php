@@ -14,6 +14,7 @@ class CommandValidator
     public function __construct()
     {
         $this->commandHandler = new CommandHandler();
+        //drop from dependencies, cretae from new()
         $this->builder = new RegexExpressionBuilder();
     }
 
