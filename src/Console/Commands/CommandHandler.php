@@ -4,51 +4,29 @@ namespace LKSS\Console\Commands;
 
 class CommandHandler
 {
-    private string $simpleRegexExpression = '^[^\s]*\s[^\s]*\s[^\s]*$';//first second data
-    private string $compositeRegexExpression = '^[^\s]*\s[^\s]*\s".*"$';//first second "df fd   "
-    private string $compositeRegexExpression2 = '^[^\s]*\s".*"\s".*"$';//first "sec df ond" "third param"
+    private string $commandParamsString;
 
-    protected function parse(string $commandString, string $command): array
+    public function __construct(string $command, string $commandName, string $regexExpression)
     {
-        $paramsSubString = substr($commandString, strlen($command) + 1);
-
-        return explode(' ', $paramsSubString);
+        $this->commandParamsString = $this->getCommandParamsString($command, $commandName);
+        $this->parse($regexExpression);
     }
 
-    public function getParamByNumber(string $commandString, string $command, int $number): string
+    protected function getCommandParamsString(string $command, string $commandName): string
     {
-        $params = $this->parse($commandString, $command);
-
-        return isset($params) ? $params[$number] : '';
+        return substr($command, strlen($commandName) + 1);
     }
 
-    public function getListOfParams(string $commandString, string $command): array
+    public function parse(string $regexExpression): void
     {
-        return $this->parse($commandString, $command);
+        $matches = [];
+        var_dump($regexExpression);
+        preg_match('/' . $regexExpression . '/', $this->commandParamsString, $matches);
+        var_dump($matches);
     }
 
-    /**
-     * 
-     * @TODO with regular expression
-     */
-    public function getFirstParam(string $commandString, string $command): string
+    public function getListOfParams(string $commandString, string $command): void
     {
-        $params = $this->parse($commandString, $command);
-
-        return isset($params) ? $params[0] : '';
-    }
-
-    public function getSecondParam(string $commandString, string $command): string
-    {
-        $params = $this->parse($commandString, $command);
-
-        return isset($params) ? $params[1] : '';
-    }
-
-    public function parseByRegex(string $commandString, string $command): string
-    {
-        $paramsSubString = substr($commandString, strlen($command) + 1);
-        
-        
+//        return $this->parse($commandString, $command);
     }
 }

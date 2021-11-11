@@ -36,13 +36,13 @@ class Console
 
             switch ($command) {
                 case SimpleCommand::EXIT:
-                    $this->simpleCommandFactory->create(SimpleCommand::EXIT)->execute($command);
+                    $this->simpleCommandFactory->create(SimpleCommand::EXIT)->execute();
                     break;
                 case SimpleCommand::SHOW_TREE:
-                    $this->simpleCommandFactory->create(SimpleCommand::SHOW_TREE)->execute($command);
+                    $this->simpleCommandFactory->create(SimpleCommand::SHOW_TREE)->execute();
                     break;
                 case SimpleCommand::SHOW_STORAGE_STATUS:
-                    $this->simpleCommandFactory->create(SimpleCommand::SHOW_STORAGE_STATUS)->execute($command);
+                    $this->simpleCommandFactory->create(SimpleCommand::SHOW_STORAGE_STATUS)->execute();
                     break;
                 default:
                    $this->handleCompoundCommand($command);

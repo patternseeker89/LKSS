@@ -3,33 +3,30 @@
 namespace LKSS\Console\Commands\Validation;
 
 use LKSS\Console\Commands\Validation\Rules\Rule;
-use LKSS\Console\Commands\CommandHandler;
-use LKSS\Console\Commands\Validation\ParamType;
 
 class CommandValidator
 {
-    private CommandHandler $commandHandler;
-    private RegexExpressionBuilder $builder;
+    private Rule $rule;
+    private ?string $regexExpression = null;
 
-    public function __construct()
+    public function __construct(Rule $rule)
     {
-        $this->commandHandler = new CommandHandler();
-        $this->builder = new RegexExpressionBuilder();
+        $this->rule = $rule;
     }
 
-    public function isValid(string $command, string $commandName, Rule $rule): bool
+    public function isValid(string $command, string $commandName): bool
     {
-        $regexExpression = $this->geRuleRegexExpression($command, $rule);
+        $regexExpression = $this->geRuleRegexExpression();
         $commandParams = $this->getCommandParams($command, $commandName);
 
         return $this->isMatchesTheRule($commandParams, $regexExpression);
     }
 
-    public function geRuleRegexExpression(string $command, Rule $rule): ?string
+    protected function geRuleRegexExpression(): ?string
     {
-        $ruleParams = $rule->getParamsList();
+        $ruleParams = $this->rule->getParamsList();
         if (!empty($ruleParams)) {
-            $builder = $this->builder->createRegexExpression();
+            $builder = (new RegexExpressionBuilder())->createRegexExpression();
             foreach ($ruleParams as $key => $param) {
                 $withSpaceSymbol = true;
                 if (count($ruleParams) == ($key + 1)) {
@@ -47,6 +44,8 @@ class CommandValidator
             $regexExpression = null;
         }
 
+        $this->regexExpression = $regexExpression;
+
         return $regexExpression;
     }
 
@@ -58,5 +57,15 @@ class CommandValidator
     protected function isMatchesTheRule(string $commandParams, string $regexExpression): bool
     {
         return (bool)preg_match('/' . $regexExpression . '/', $commandParams);
+    }
+
+    public function getRule(): Rule
+    {
+        return $this->rule;
+    }
+
+    public function getRegexExpression(): ?string
+    {
+        return $this->regexExpression;
     }
 }

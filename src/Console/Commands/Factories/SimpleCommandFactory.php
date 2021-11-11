@@ -3,7 +3,6 @@
 namespace LKSS\Console\Commands\Factories;
 
 use LKSS\StorageTree;
-use LKSS\Console\Commands\Factories\CommandFactory;
 use LKSS\Console\Commands\Interfaces\SimpleCommand;
 use LKSS\Console\Commands\Simple\ExitCommand;
 use LKSS\Console\Commands\Simple\ShowTreeCommand;
