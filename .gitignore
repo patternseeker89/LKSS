@@ -2,5 +2,6 @@
 tree.data
 test.html
 example-blocks-texts.png
-
+/data/
 /vendor/
+.idea/
