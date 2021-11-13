@@ -7,6 +7,16 @@ class RegexExpressionBuilder
     private string $simpleRegexExpression = '^[^\s]*\s[^\s]*\s[^\s]*$';//first second data
     private string $compositeRegexExpression = '^[^\s]*\s[^\s]*\s".*"$';//first second "df fd   "
     private string $compositeRegexExpression2 = '^[^\s]*\s".*"\s".*"$';//first "sec df ond" "third param"
+    
+    
+    
+    //@TODO по кускам получать параметры, первый, второй, ...
+    допустим есть 3 параметра '^[^\s]*\s".*"\s".*"$'
+        сначала получаем только 1-й '^[^\s]*'
+        только 2-й '^.*".*"\s.*$'
+        только 3-й '^.*".*"$'
+    
+    
 
     private string $simpleParamExpression = '[^\s]*';
     private string $compositeParamExpression = '".*"';
