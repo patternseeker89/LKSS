@@ -16,7 +16,7 @@ class ShowNodeCommand implements CompoundCommand
 
     public function execute(string $command): void
     {
-        $commandHandler = new \LKSS\Console\Commands\CommandHandler();
+        $commandHandler = new \LKSS\Console\Commands\CommandParamsHandler();
 
         $nodeKey = $commandHandler->getFirstParam($command, self::SHOW_NODE);
         $node = $this->storage->getNodeByKey($nodeKey);

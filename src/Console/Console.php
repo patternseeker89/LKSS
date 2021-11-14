@@ -6,7 +6,6 @@ use LKSS\Console\Commands\Interfaces\SimpleCommand;
 use LKSS\Console\Commands\Interfaces\CompoundCommand;
 use LKSS\Console\Commands\Factories\SimpleCommandFactory;
 use LKSS\Console\Commands\Factories\CompoundCommandFactory;
-use LKSS\Console\Commands\Validation\RegexExpressionBuilder;
 
 class Console
 {
@@ -21,12 +20,7 @@ class Console
         $this->compoundCommandFactory = $compoundCommandFactory;
 
         //@TODO make object with params from console(user) like Request in Laravel
-        
         //@TODO maybe make trait with validation for Command classes
-        
-//        $validator = new Commands\Validation\CommandValidator();
-//        $result = $validator->isValid('f gg', new Commands\Validation\Rules\MoveNodeRule());
-//        var_dump($result);die();
     }
 
     public function bash(): void

@@ -23,7 +23,7 @@ class MoveNodeCommand extends AbstractCompoundCommand
             //$paramsString = substr($command, strlen(self::MOVE_NODE) + 1);
             //$params = explode(' ', $paramsString);
 
-//            $commandHandler = new \LKSS\Console\Commands\CommandHandler();
+//            $commandHandler = new \LKSS\Console\Commands\CommandParamsHandler();
 //            $nodeKeyParam = $commandHandler->getFirstParam($command, self::MOVE_NODE);
 //            $nodeKey = ($nodeKeyParam == "null") ? null : $nodeKeyParam;
 //            $targetNodeKey = $commandHandler->getSecondParam($command, self::MOVE_NODE);

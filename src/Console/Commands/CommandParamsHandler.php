@@ -6,15 +6,15 @@ use LKSS\Console\Commands\Validation\ParamType;
 use LKSS\Console\Commands\Validation\Rules\RenameNodeRule;
 
 /**
- * CommandParamsHandler
+ * @TODO in future solve problem with 2 composite params together!!!
  */
-class CommandHandler
+class CommandParamsHandler
 {
     private \SplQueue $paramsQueue;
     private string $commandParamsString;
 
     private string $simpleParamExpression = '/^[^\s]*/';
-    private string $compositeParamExpression = '/".*"$/';
+    private string $compositeParamExpression = '/^".*"/';
 
     public function __construct(string $command, string $commandName)
     {
@@ -34,22 +34,31 @@ class CommandHandler
         foreach ($ruleParams as $paramType) {
             $matches = [];
             $currentParam = '';
+            $additionalSymbolsCount = 1;
             if ($paramType == ParamType::SIMPLE) {
                 preg_match($this->simpleParamExpression, $this->commandParamsString, $matches);
                 $currentParam = $matches[0];
             } elseif ($paramType == ParamType::COMPOSITE) {
                 preg_match($this->compositeParamExpression, $this->commandParamsString, $matches);
-                $currentParam = trim($matches[0], '"');
+                $currentParam = $this->trimParam($matches[0]);
+                $additionalSymbolsCount = 3;
             }
-
             $this->paramsQueue->enqueue($currentParam);
-            $this->removeParamFromCommandString($currentParam);
+            $this->removeParamFromCommandString($currentParam, $additionalSymbolsCount);
+
         }
     }
 
-    protected function removeParamFromCommandString(string $param): void
+    protected function removeParamFromCommandString(string $param, $additionalSymbolsCount): void
     {
-        $this->commandParamsString = substr($this->commandParamsString, strlen($param) + 1);
+        $this->commandParamsString = substr($this->commandParamsString, strlen($param) + $additionalSymbolsCount);
+    }
+
+    protected function trimParam(string $param): string
+    {
+        $param = substr($param, 0, strlen($param) - 1);
+
+        return substr($param, 1, strlen($param) - 1);
     }
 
     public function getCurrentParam(): ?string
