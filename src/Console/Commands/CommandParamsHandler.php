@@ -7,6 +7,7 @@ use LKSS\Console\Commands\Validation\Rules\RenameNodeRule;
 
 /**
  * @TODO in future solve problem with 2 composite params together!!!
+ * 1. Can disable symbol " in ""(eisy solve)
  */
 class CommandParamsHandler
 {
