@@ -22,7 +22,12 @@ class RenameNodeCommand extends AbstractCompoundCommand
     {
         if ($this->validator->isValid($command, self::RENAME_NODE)) {
             echo 'ok\n';
-            $commandHandler = new CommandHandler($command, self::RENAME_NODE, $this->validator->getRegexExpression());
+            $commandHandler = new CommandHandler($command, self::RENAME_NODE);
+//            var_dump($commandHandler->getCurrentParam());
+//            var_dump($commandHandler->getCurrentParam());
+//            var_dump($commandHandler->getCurrentParam());
+//            var_dump($commandHandler->getCurrentParam());
+
             //$commandHandler->getFirstParam($command, self::RENAME_NODE);
 
 //            $paramsString = substr($command, strlen(self::RENAME_NODE) + 1);

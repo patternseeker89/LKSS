@@ -2,14 +2,25 @@
 
 namespace LKSS\Console\Commands;
 
+use LKSS\Console\Commands\Validation\ParamType;
+use LKSS\Console\Commands\Validation\Rules\RenameNodeRule;
+
+/**
+ * CommandParamsHandler
+ */
 class CommandHandler
 {
+    private \SplQueue $paramsQueue;
     private string $commandParamsString;
 
-    public function __construct(string $command, string $commandName, string $regexExpression)
+    private string $simpleParamExpression = '/^[^\s]*/';
+    private string $compositeParamExpression = '/".*"$/';
+
+    public function __construct(string $command, string $commandName)
     {
+        $this->paramsQueue = new \SplQueue();
         $this->commandParamsString = $this->getCommandParamsString($command, $commandName);
-        $this->parse($regexExpression);
+        $this->parse();
     }
 
     protected function getCommandParamsString(string $command, string $commandName): string
@@ -17,16 +28,37 @@ class CommandHandler
         return substr($command, strlen($commandName) + 1);
     }
 
-    public function parse(string $regexExpression): void
+    protected function parse(): void
     {
-        $matches = [];
-        var_dump($regexExpression);
-        preg_match('/' . $regexExpression . '/', $this->commandParamsString, $matches);
-        var_dump($matches);
+        $ruleParams = (new RenameNodeRule())->getParamsList();
+        foreach ($ruleParams as $paramType) {
+            $matches = [];
+            $currentParam = '';
+            if ($paramType == ParamType::SIMPLE) {
+                preg_match($this->simpleParamExpression, $this->commandParamsString, $matches);
+                $currentParam = $matches[0];
+            } elseif ($paramType == ParamType::COMPOSITE) {
+                preg_match($this->compositeParamExpression, $this->commandParamsString, $matches);
+                $currentParam = trim($matches[0], '"');
+            }
+
+            $this->paramsQueue->enqueue($currentParam);
+            $this->removeParamFromCommandString($currentParam);
+        }
     }
 
-    public function getListOfParams(string $commandString, string $command): void
+    protected function removeParamFromCommandString(string $param): void
     {
-//        return $this->parse($commandString, $command);
+        $this->commandParamsString = substr($this->commandParamsString, strlen($param) + 1);
+    }
+
+    public function getCurrentParam(): ?string
+    {
+        $param = null;
+        if ($this->paramsQueue->count() != 0) {
+            $param = $this->paramsQueue->dequeue();
+        }
+
+        return $param;
     }
 }
