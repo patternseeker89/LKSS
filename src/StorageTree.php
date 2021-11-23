@@ -2,6 +2,14 @@
 
 namespace LKSS;
 
+
+/*
+ * Save tree into file (Adjacency List)
+ * https://bitworks.software/2017-10-20-storing-trees-in-rdbms.html 
+ 
+ 
+ 
+ */
 class StorageTree
 {
     private $root;
