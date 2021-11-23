@@ -11,7 +11,7 @@ namespace LKSS\Console\Commands\Validation;
 class RegexExpressionBuilder
 {
     private string $simpleParamExpression = '[^\s]*';
-    private string $compositeParamExpression = '".*"';
+    private string $compositeParamExpression = '"[^"]*"';
     private string $openParamExpression = '^';
     private string $closeParamExpression = '$';
     private string $spaceSymbol = '\s';

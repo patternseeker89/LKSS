@@ -2,6 +2,7 @@
 
 namespace LKSS\Console\Commands\Compound;
 
+use LKSS\Console\Commands\CommandParamsHandler;
 use LKSS\Console\Commands\Validation\CommandValidator;
 use LKSS\StorageTree;
 use LKSS\Console\Commands\Validation\Rules\MoveNodeRule;
@@ -14,20 +15,19 @@ class MoveNodeCommand extends AbstractCompoundCommand
     public function __construct(StorageTree $storage)
     {
         $this->storage = $storage;
-        $this->validator = new CommandValidator(new MoveNodeRule());
+        $rule = new MoveNodeRule();
+        $this->validator = new CommandValidator($rule, self::MOVE_NODE);
+        $this->paramsHandler = new CommandParamsHandler($rule, self::MOVE_NODE);
     }
 
     public function execute(string $command): void
     {
-        if ($this->validator->isValid($command, self::MOVE_NODE)) {
-            //$paramsString = substr($command, strlen(self::MOVE_NODE) + 1);
-            //$params = explode(' ', $paramsString);
-
-//            $commandHandler = new \LKSS\Console\Commands\CommandParamsHandler();
-//            $nodeKeyParam = $commandHandler->getFirstParam($command, self::MOVE_NODE);
-//            $nodeKey = ($nodeKeyParam == "null") ? null : $nodeKeyParam;
-//            $targetNodeKey = $commandHandler->getSecondParam($command, self::MOVE_NODE);
-//            $this->storage->moveNode($nodeKey, $targetNodeKey);
+        if ($this->validator->isValid($command)) {
+            $this->paramsHandler->setCommand($command);
+            $nodeKeyParam = $this->paramsHandler->getCurrentParam();
+            $nodeKey = ($nodeKeyParam == "null") ? null : $nodeKeyParam;
+            $targetNodeKey = $this->paramsHandler->getCurrentParam();
+            $this->storage->moveNode($nodeKey, $targetNodeKey);
         } else {
             echo "Dont valid params!\n";
         }

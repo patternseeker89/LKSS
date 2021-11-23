@@ -7,17 +7,19 @@ use LKSS\Console\Commands\Validation\Rules\Rule;
 class CommandValidator
 {
     private Rule $rule;
+    private string $commandName;
     private ?string $regexExpression = null;
 
-    public function __construct(Rule $rule)
+    public function __construct(Rule $rule, string $commandName)
     {
         $this->rule = $rule;
+        $this->commandName = $commandName;
     }
 
-    public function isValid(string $command, string $commandName): bool
+    public function isValid(string $command): bool
     {
         $regexExpression = $this->geRuleRegexExpression();
-        $commandParams = $this->getCommandParams($command, $commandName);
+        $commandParams = $this->getCommandParams($command);
 
         return $this->isMatchesTheRule($commandParams, $regexExpression);
     }
@@ -49,9 +51,9 @@ class CommandValidator
         return $regexExpression;
     }
 
-    protected function getCommandParams(string $command, string $commandName): string
+    protected function getCommandParams(string $command): string
     {
-        return substr($command, strlen($commandName) + 1);
+        return substr($command, strlen($this->commandName) + 1);
     }
 
     protected function isMatchesTheRule(string $commandParams, string $regexExpression): bool

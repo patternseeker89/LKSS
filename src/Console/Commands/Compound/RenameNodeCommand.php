@@ -15,24 +15,24 @@ class RenameNodeCommand extends AbstractCompoundCommand
     public function __construct(StorageTree $storage)
     {
         $this->storage = $storage;
-        $this->validator = new CommandValidator(new RenameNodeRule());
+        $rule = new RenameNodeRule();
+        $this->validator = new CommandValidator($rule, self::RENAME_NODE);
+        $this->paramsHandler = new CommandParamsHandler($rule, self::RENAME_NODE);
     }
 
     public function execute(string $command): void
     {
-        if ($this->validator->isValid($command, self::RENAME_NODE)) {
-            $commandParamsHandler = new CommandParamsHandler($command, self::RENAME_NODE);
-            $keyParam = $commandParamsHandler->getCurrentParam();
+        if ($this->validator->isValid($command)) {
+            $this->paramsHandler->setCommand($command);
+            $keyParam = $this->paramsHandler->getCurrentParam();
             $key = ($keyParam == "null") ? null : $keyParam;
-            $newName = $commandParamsHandler->getCurrentParam();
-            //$newName = $this->setNewNameByEditor();
+            $newName = $this->paramsHandler->getCurrentParam();
             $this->storage->renameNode($key, $newName);
         } else {
             echo "Dont valid params!\n";
         }
     }
 
-    //setTextByEditor()
     protected function setNewNameByEditor(): string
     {
         $file = '/tmp/test.txt';

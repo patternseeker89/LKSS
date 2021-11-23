@@ -3,35 +3,39 @@
 namespace LKSS\Console\Commands;
 
 use LKSS\Console\Commands\Validation\ParamType;
-use LKSS\Console\Commands\Validation\Rules\RenameNodeRule;
+use LKSS\Console\Commands\Validation\Rules\Rule;
 
-/**
- * @TODO in future solve problem with 2 composite params together!!!
- * 1. Can disable symbol " in ""(eisy solve)
- */
 class CommandParamsHandler
 {
+    private Rule $rule;
+    private string $commandName;
     private \SplQueue $paramsQueue;
     private string $commandParamsString;
 
     private string $simpleParamExpression = '/^[^\s]*/';
-    private string $compositeParamExpression = '/^".*"/';
+    private string $compositeParamExpression = '/^"[^"]*"/';
 
-    public function __construct(string $command, string $commandName)
+    public function __construct(Rule $rule, string $commandName)
     {
+        $this->rule = $rule;
+        $this->commandName = $commandName;
         $this->paramsQueue = new \SplQueue();
-        $this->commandParamsString = $this->getCommandParamsString($command, $commandName);
+    }
+
+    public function setCommand(string $command): void
+    {
+        $this->commandParamsString = $this->getCommandParamsString($command);
         $this->parse();
     }
 
-    protected function getCommandParamsString(string $command, string $commandName): string
+    protected function getCommandParamsString(string $command): string
     {
-        return substr($command, strlen($commandName) + 1);
+        return substr($command, strlen($this->commandName) + 1);
     }
 
     protected function parse(): void
     {
-        $ruleParams = (new RenameNodeRule())->getParamsList();
+        $ruleParams = $this->rule->getParamsList();
         foreach ($ruleParams as $paramType) {
             $matches = [];
             $currentParam = '';

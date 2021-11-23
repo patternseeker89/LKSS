@@ -2,10 +2,10 @@
 
 namespace LKSS\Console\Commands\Validation\Rules;
 
-class MoveNodeRule implements Rule
+class InsertNodeRule implements Rule
 {
     public function getParamsList(): array
     {
-        return ['simple', 'simple'];
+        return ['simple', 'composite', 'composite'];
     }
 }

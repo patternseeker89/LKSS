@@ -2,7 +2,7 @@
 
 namespace LKSS\Console\Commands\Validation\Rules;
 
-class MoveNodeRule implements Rule
+class CloneNodeRule implements Rule
 {
     public function getParamsList(): array
     {

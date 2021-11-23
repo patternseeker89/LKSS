@@ -2,25 +2,31 @@
 
 namespace LKSS\Console\Commands\Compound;
 
+use LKSS\Console\Commands\AbstractClasses\AbstractCompoundCommand;
+use LKSS\Console\Commands\CommandParamsHandler;
+use LKSS\Console\Commands\Validation\CommandValidator;
+use LKSS\Console\Commands\Validation\Rules\UpdateNodeRule;
 use LKSS\StorageTree;
-use LKSS\Console\Commands\Interfaces\CompoundCommand;
 
-class UpdateNodeCommand implements CompoundCommand
+class UpdateNodeCommand extends AbstractCompoundCommand
 {
     private StorageTree $storage;
 
     public function __construct(StorageTree $storage)
     {
         $this->storage = $storage;
+        $rule = new UpdateNodeRule();
+        $this->validator = new CommandValidator($rule, self::UPDATE_NODE);
+        $this->paramsHandler = new CommandParamsHandler($rule, self::UPDATE_NODE);
     }
 
     public function execute(string $command): void
     {
-        $paramsString = substr($command, strlen(self::UPDATE_NODE) + 1);
-        $params = explode(' ', $paramsString);
-        if (count($params) == 1) {
-            $key = ($params[0] == "null") ? null : $params[0];
-            $data = $this->setNodeData();
+        if ($this->validator->isValid($command)) {
+            $this->paramsHandler->setCommand($command);
+            $keyParam = $this->paramsHandler->getCurrentParam();
+            $key = ($keyParam == "null") ? null : $keyParam;
+            $data = $this->paramsHandler->getCurrentParam();
             $this->storage->updateNode($key, $data);
         } else {
             echo "Dont valid params!\n";

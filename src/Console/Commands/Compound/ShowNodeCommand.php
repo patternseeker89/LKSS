@@ -2,35 +2,44 @@
 
 namespace LKSS\Console\Commands\Compound;
 
+use LKSS\Console\Commands\AbstractClasses\AbstractCompoundCommand;
+use LKSS\Console\Commands\CommandParamsHandler;
+use LKSS\Console\Commands\Validation\CommandValidator;
+use LKSS\Console\Commands\Validation\Rules\ShowNodeRule;
 use LKSS\StorageTree;
-use LKSS\Console\Commands\Interfaces\CompoundCommand;
 
-class ShowNodeCommand implements CompoundCommand
+class ShowNodeCommand extends AbstractCompoundCommand
 {
     private StorageTree $storage;
 
     public function __construct(StorageTree $storage)
     {
         $this->storage = $storage;
+        $rule = new ShowNodeRule();
+        $this->validator = new CommandValidator($rule, self::SHOW_NODE);
+        $this->paramsHandler = new CommandParamsHandler($rule, self::SHOW_NODE);
     }
 
     public function execute(string $command): void
     {
-        $commandHandler = new \LKSS\Console\Commands\CommandParamsHandler();
+        if ($this->validator->isValid($command)) {
+            $this->paramsHandler->setCommand($command);
+            $nodeKey = $this->paramsHandler->getCurrentParam();
+            $node = $this->storage->getNodeByKey($nodeKey);
 
-        $nodeKey = $commandHandler->getFirstParam($command, self::SHOW_NODE);
-        $node = $this->storage->getNodeByKey($nodeKey);
-
-        if (!is_null($node)) {
-            echo "\n";
-            echo "key: " . $node->getKey() . "\n";
-            echo "name: " . $node->getName() . "\n";
-            echo "data: \n" . $node->getData() . "\n";
-            echo "childs: ";
-            echo is_array($node->getChildren()) ? count($node->getChildren()) : 0 . "\n";
-            echo "\n" . "\n";
+            if (!is_null($node)) {
+                echo "\n";
+                echo "key: " . $node->getKey() . "\n";
+                echo "name: " . $node->getName() . "\n";
+                echo "data: \n" . $node->getData() . "\n";
+                echo "childs: ";
+                echo is_array($node->getChildren()) ? count($node->getChildren()) : 0 . "\n";
+                echo "\n" . "\n";
+            } else {
+                echo "Node does not exist for this key!\n";
+            }
         } else {
-            echo "Node does not exist for this key!\n";
+            echo "Dont valid params!\n";
         }
     }
 }
