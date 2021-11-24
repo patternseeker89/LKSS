@@ -5,6 +5,14 @@ namespace LKSS\Console\Commands;
 use LKSS\Console\Commands\Validation\ParamType;
 use LKSS\Console\Commands\Validation\Rules\Rule;
 
+
+/**
+* VERTICAL COMMAND
+* insert node
+* key: > 
+* name: >
+* data: >
+*/
 class CommandParamsHandler
 {
     private Rule $rule;
