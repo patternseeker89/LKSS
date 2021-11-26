@@ -2,20 +2,17 @@
 
 namespace LKSS\Storage;
 
-/*
- * Save tree into file (Adjacency List)
- * https://bitworks.software/2017-10-20-storing-trees-in-rdbms.html
- */
-
 use LKSS\Storage\Node;
 use LKSS\Storage\StorageTreeInterface;
 
 class StorageTree implements StorageTreeInterface
 {
     private ?Node $root;
+    private StorageVisualizer $visualizer;
 
-    public function __construct()
+    public function __construct(StorageVisualizer $visualizer)
     {
+        $this->visualizer = $visualizer;
         $this->root = $this->loadTreeFromFile();
     }
 
@@ -123,21 +120,22 @@ class StorageTree implements StorageTreeInterface
      */
     public function printTree(Node $parentNode, string $separator): void
     {
-        $separator = $separator . "----";
-        echo $separator . $parentNode->getName() . " " 
-                . "[" . $parentNode->getKey(). "]" .  "\n";
-        if ($parentNode->haveChildren()) {
-            foreach ($parentNode->getChildren() as $childNode) {
-                if (!\is_null($childNode->getChildren())) {
-                    $this->printTree($childNode, $separator);
-                } else {
-                    $separator = $separator . "----";
-                    echo $separator . $childNode->getName() . " " 
-                . "[" . $childNode->getKey(). "]" .  "\n";
-                    $separator = substr($separator, 0, strlen($separator) -4);
-                }
-            }
-        }
+        $this->visualizer->printTree($parentNode, $separator);
+//        $separator = $separator . "----";
+//        echo $separator . $parentNode->getName() . " "
+//                . "[" . $parentNode->getKey(). "]" .  "\n";
+//        if ($parentNode->haveChildren()) {
+//            foreach ($parentNode->getChildren() as $childNode) {
+//                if (!\is_null($childNode->getChildren())) {
+//                    $this->printTree($childNode, $separator);
+//                } else {
+//                    $separator = $separator . "----";
+//                    echo $separator . $childNode->getName() . " "
+//                . "[" . $childNode->getKey(). "]" .  "\n";
+//                    $separator = substr($separator, 0, strlen($separator) -4);
+//                }
+//            }
+//        }
     }
 
     public function saveTreeIntoFile(): void
@@ -192,12 +190,12 @@ class StorageTree implements StorageTreeInterface
                 return $child;
             }
         }
-        
+
         return null;
     }
-    
+
     /**
-     * Breadth-first search (BFS) used, my realization
+     *  Depth-first search (DFS) used, my realization
      */
     public function findNodeInTree(string $key, Node $parentNode): ?Node
     {
@@ -214,7 +212,7 @@ class StorageTree implements StorageTreeInterface
                 return $neededNode;
             }            
         }
-        
+
         return null;
     }
 

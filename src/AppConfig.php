@@ -3,7 +3,8 @@
 namespace LKSS;
 
 
-class AppConfig {
+class AppConfig
+{
     private string $editor = 'nano';
     private string $tmpEditorFilePath = 'nano';
     

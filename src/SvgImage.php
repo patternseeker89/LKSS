@@ -2,6 +2,7 @@
 
 namespace LKSS;
 
+use LKSS\Storage\StorageTree;
 use SVG\SVG;
 use SVG\Nodes\Shapes\SVGRect;
 
@@ -10,7 +11,8 @@ use SVG\Nodes\Shapes\SVGRect;
  *
  * @author porfirovskiy
  */
-class SvgImage {
+class SvgImage
+{
     
     public function create(StorageTree $tree): string
     {

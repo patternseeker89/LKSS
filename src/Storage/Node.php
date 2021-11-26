@@ -2,6 +2,8 @@
 
 namespace LKSS\Storage;
 
+use LKSS\Storage\Node\KeyGenerator;
+
 class Node implements NodeInterface
 {
     private string $key;
@@ -14,7 +16,7 @@ class Node implements NodeInterface
 
     public function __construct(string $name, string $data)
     {
-        $this->key = $this->generateRandomKey();
+        $this->key = KeyGenerator::generateRandomKey();
         $this->name = $name;
         $this->data = $data;
         $this->children = null;
@@ -79,14 +81,9 @@ class Node implements NodeInterface
     {
         return $this->name;
     }
-    
-    private function generateRandomKey(): string
-    {
-        return bin2hex(random_bytes(10));
-    }
 
     public function __clone()
     {
-        $this->key = $this->generateRandomKey();
+        $this->key = KeyGenerator::generateRandomKey();
     }
 }
