@@ -1,24 +1,24 @@
 <?php
 
-namespace LKSS;
-
+namespace LKSS\Storage;
 
 /*
  * Save tree into file (Adjacency List)
- * https://bitworks.software/2017-10-20-storing-trees-in-rdbms.html 
- 
- 
- 
+ * https://bitworks.software/2017-10-20-storing-trees-in-rdbms.html
  */
-class StorageTree
+
+use LKSS\Storage\Node;
+use LKSS\Storage\StorageTreeInterface;
+
+class StorageTree implements StorageTreeInterface
 {
-    private $root;
+    private ?Node $root;
 
     public function __construct()
     {
         $this->root = $this->loadTreeFromFile();
     }
-    
+
     public function __destruct()
     {
         $this->saveTreeIntoFile();

@@ -2,7 +2,7 @@
 
 namespace LKSS\Console\Commands\Factories;
 
-use LKSS\StorageTree;
+use LKSS\Storage\StorageTree;
 use LKSS\Console\Commands\Factories\CommandFactory;
 use LKSS\Console\Commands\Interfaces\CompoundCommand;
 use LKSS\Console\Commands\Compound\ShowNodeCommand;

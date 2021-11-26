@@ -5,6 +5,7 @@ namespace LKSS;
 use LKSS\Console\Commands\Factories\SimpleCommandFactory;
 use LKSS\Console\Commands\Factories\CompoundCommandFactory;
 use LKSS\Console\Console;
+use LKSS\Storage\StorageTree;
 
 class App 
 {

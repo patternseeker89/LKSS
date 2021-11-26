@@ -4,7 +4,7 @@ namespace LKSS\Console\Commands\Compound;
 
 use LKSS\Console\Commands\CommandParamsHandler;
 use LKSS\Console\Commands\Validation\CommandValidator;
-use LKSS\StorageTree;
+use LKSS\Storage\StorageTree;
 use LKSS\Console\Commands\Validation\Rules\MoveNodeRule;
 use LKSS\Console\Commands\AbstractClasses\AbstractCompoundCommand;
 

@@ -6,7 +6,7 @@ use LKSS\Console\Commands\AbstractClasses\AbstractCompoundCommand;
 use LKSS\Console\Commands\CommandParamsHandler;
 use LKSS\Console\Commands\Validation\CommandValidator;
 use LKSS\Console\Commands\Validation\Rules\CloneNodeRule;
-use LKSS\StorageTree;
+use LKSS\Storage\StorageTree;
 
 class CloneNodeCommand extends AbstractCompoundCommand
 {

@@ -2,7 +2,7 @@
 
 namespace LKSS\Console\Commands\Simple;
 
-use LKSS\StorageTree;
+use LKSS\Storage\StorageTree;
 use LKSS\Console\Commands\Interfaces\SimpleCommand;
 
 class ExitCommand implements SimpleCommand

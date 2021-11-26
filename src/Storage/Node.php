@@ -1,8 +1,8 @@
 <?php
 
-namespace LKSS;
+namespace LKSS\Storage;
 
-class Node
+class Node implements NodeInterface
 {
     private string $key;
     private string $name; // Privat bank, Deposit Standart Dollar

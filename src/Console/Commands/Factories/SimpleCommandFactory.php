@@ -2,7 +2,7 @@
 
 namespace LKSS\Console\Commands\Factories;
 
-use LKSS\StorageTree;
+use LKSS\Storage\StorageTree;
 use LKSS\Console\Commands\Interfaces\SimpleCommand;
 use LKSS\Console\Commands\Simple\ExitCommand;
 use LKSS\Console\Commands\Simple\ShowTreeCommand;
