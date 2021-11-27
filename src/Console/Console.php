@@ -69,7 +69,7 @@ class Console
                 $this->compoundCommandFactory->create(CompoundCommand::CLONE_NODE)->execute($command);
                 break;
             default:
-               echo $command . "\n";
+               echo "Command not found!\n";
         }
     }
 }

@@ -2,23 +2,30 @@
 
 namespace LKSS\Storage;
 
+use LKSS\Storage\Keeper\StorageKeeperInterface;
 use LKSS\Storage\Node;
 use LKSS\Storage\StorageTreeInterface;
 
 class StorageTree implements StorageTreeInterface
 {
     private ?Node $root;
+    private StorageKeeperInterface $keeper;
     private StorageVisualizer $visualizer;
 
-    public function __construct(StorageVisualizer $visualizer)
-    {
+    public function __construct(
+        StorageKeeperInterface $keeper,
+        StorageVisualizer $visualizer,
+    ) {
+        $this->keeper = $keeper;
         $this->visualizer = $visualizer;
+        $this->root = $this->keeper->load();
         $this->root = $this->loadTreeFromFile();
     }
 
     public function __destruct()
     {
         $this->saveTreeIntoFile();
+        $this->keeper->save($this->root);
     }
 
     public function insertNode(?string $parentKey, string $name, string $data): void
@@ -115,9 +122,6 @@ class StorageTree implements StorageTreeInterface
         return $this->root;
     }
 
-    /**
-     * @todo Move in separate class!!!
-     */
     public function printTree(Node $parentNode, string $separator = ''): void
     {
         $this->visualizer->printTree($parentNode, $separator);
@@ -143,17 +147,7 @@ class StorageTree implements StorageTreeInterface
     {
         
     }
-    
-    public function loadTree(): bool
-    {
-        
-    }
-    
-    public function saveTree(): bool
-    {
-        
-    }
-    
+
     public function getNodeByKey(string $key): ?Node
     {
         if ($this->root->getKey() === $key) {    
