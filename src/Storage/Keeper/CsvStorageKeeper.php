@@ -17,10 +17,6 @@ class CsvStorageKeeper implements StorageKeeperInterface
         }
     }
 
-    /**
-     * 1. load list from file
-     * 2. build storage tree from this list
-     */
     public function load(StorageTreeInterface $storage): ?Node
     {
         $rootNode = null;
@@ -69,6 +65,9 @@ class CsvStorageKeeper implements StorageKeeperInterface
         return $list;
     }
 
+    /**
+     * @TODO use SplFileObject instead fopen()
+     */
     protected function saveNodesListIntoFile(array $nodesList): void
     {
         $filePointer = fopen($this->storageFileName, 'w');
@@ -93,11 +92,13 @@ class CsvStorageKeeper implements StorageKeeperInterface
         $isRootNode = true;
         foreach ($nodesList as $node) {
             if ($isRootNode) {
-                $storage->insertNode(null, $node[1], $node[2], $node[3]);
+                $parentKey = null;
                 $isRootNode = false;
             } else {
-                $storage->insertNode($node[0], $node[1], $node[2], $node[3]);
+                $parentKey = $node[0];
             }
+
+            $storage->insertNode($parentKey, $node[1], $node[2], $node[3]);
         }
 
         return $storage->getRoot();
