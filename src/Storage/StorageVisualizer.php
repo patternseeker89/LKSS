@@ -11,14 +11,19 @@ class StorageVisualizer
         $separator = $this->increaseSeparator($separator);
         $this->printCurrentNodeString($parentNode->getKey(), $parentNode->getName(), $separator);
         if ($parentNode->haveChildren()) {
-            foreach ($parentNode->getChildren() as $childNode) {
-                if (!\is_null($childNode->getChildren())) {
-                    $this->printTree($childNode, $separator);
-                } else {
-                    $separator = $this->increaseSeparator($separator);
-                    $this->printCurrentNodeString($childNode->getKey(), $childNode->getName(), $separator);
-                    $separator = substr($separator, 0, strlen($separator) -4);
-                }
+            $this->handleChildrenNodes($parentNode, $separator);
+        }
+    }
+
+    protected function handleChildrenNodes(Node $parentNode, string $separator): void
+    {
+        foreach ($parentNode->getChildren() as $childNode) {
+            if (!\is_null($childNode->getChildren())) {
+                $this->printTree($childNode, $separator);
+            } else {
+                $separator = $this->increaseSeparator($separator);
+                $this->printCurrentNodeString($childNode->getKey(), $childNode->getName(), $separator);
+                $separator = substr($separator, 0, strlen($separator) -4);
             }
         }
     }
@@ -26,9 +31,9 @@ class StorageVisualizer
     protected function printCurrentNodeString(string $key, string $name, string $separator): void
     {
         if ($separator == self::SEPARATOR_DEFAULT) {
-            echo ' ' . $name . " " . "[" . $key . "]" . "\n";
+            echo '* "' . $name . '" ' . "[" . $key . "]" . "\n";
         } else {
-            echo $separator . $name . " " . "[" . $key . "]" . "\n";
+            echo $separator . '"' . $name . '" ' . "[" . $key . "]" . "\n";
         }
     }
 

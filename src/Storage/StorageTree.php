@@ -118,7 +118,7 @@ class StorageTree implements StorageTreeInterface
     /**
      * @todo Move in separate class!!!
      */
-    public function printTree(Node $parentNode, string $separator): void
+    public function printTree(Node $parentNode, string $separator = ''): void
     {
         $this->visualizer->printTree($parentNode, $separator);
     }
