@@ -8,7 +8,7 @@ use LKSS\Storage\StorageTreeInterface;
 
 class StorageTree implements StorageTreeInterface
 {
-    private ?Node $root;
+    private ?Node $root = null;
     private StorageKeeperInterface $keeper;
     private StorageVisualizer $visualizer;
 
@@ -18,19 +18,17 @@ class StorageTree implements StorageTreeInterface
     ) {
         $this->keeper = $keeper;
         $this->visualizer = $visualizer;
-        $this->root = $this->keeper->load();
-        $this->root = $this->loadTreeFromFile();
+        $this->root = $this->keeper->load($this);
     }
 
     public function __destruct()
     {
-        $this->saveTreeIntoFile();
         $this->keeper->save($this->root);
     }
 
-    public function insertNode(?string $parentKey, string $name, string $data): void
+    public function insertNode(?string $parentKey, ?string $key, string $name, string $data): void
     {
-        $newNode = new Node($name, $data);
+        $newNode = new Node($key, $name, $data);
 
         if (\is_null($parentKey)) {
             $this->root = $newNode;
@@ -127,22 +125,6 @@ class StorageTree implements StorageTreeInterface
         $this->visualizer->printTree($parentNode, $separator);
     }
 
-    public function saveTreeIntoFile(): void
-    {
-        $serializedTree = serialize($this->root);
-
-        file_put_contents('data/storage.data', $serializedTree);
-    }
-
-    private function loadTreeFromFile()
-    {
-        if (file_exists('data/storage.data')) {
-            return unserialize(file_get_contents('data/storage.data'));
-        } else {
-            return null;
-        }
-    }
-    
     public function getPath(int $startNodeKey, int $endNodeKey): void
     {
         
@@ -150,7 +132,8 @@ class StorageTree implements StorageTreeInterface
 
     public function getNodeByKey(string $key): ?Node
     {
-        if ($this->root->getKey() === $key) {    
+        if ($this->root->getKey() === $key) {
+
             return $this->root;
         } else {
             return $this->findNodeInTree($key, $this->root);

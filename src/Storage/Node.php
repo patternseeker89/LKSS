@@ -14,9 +14,13 @@ class Node implements NodeInterface
     private ?Node $parent;
     private ?array $children;
 
-    public function __construct(string $name, string $data)
+    public function __construct(?string $key, string $name, string $data)
     {
-        $this->key = KeyGenerator::generateRandomKey();
+        if (is_null($key)) {
+            $this->key = KeyGenerator::generateRandomKey();
+        } else {
+            $this->key = $key;
+        }
         $this->name = $name;
         $this->data = $data;
         $this->children = null;

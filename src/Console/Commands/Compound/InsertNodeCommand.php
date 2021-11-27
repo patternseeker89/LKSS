@@ -28,7 +28,7 @@ class InsertNodeCommand extends AbstractCompoundCommand
             $parentKey = ($parentKeyParam == "null") ? null : $parentKeyParam;
             $name = $this->paramsHandler->getCurrentParam();
             $data = $this->paramsHandler->getCurrentParam();
-            $this->storage->insertNode($parentKey, $name, $data);
+            $this->storage->insertNode($parentKey, null, $name, $data);
         } else {
             echo "Dont valid params!\n";
         }
