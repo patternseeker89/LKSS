@@ -20,8 +20,8 @@ class App
        //(new CsvFileTransactionalDb())->insert(['dsd', 'key', 'name', 'data']);die();
 //1f422ac1963dd8072c49,8f9c4837cb0e40b44444,HYY-KJHHHJUJH,
 //        (new CsvFileTransactionalDb())->update(
-//            '8f9c4837cb0e40b44444',
-//            ['1f422ac1963dd8072c49', '8f9c4837cb0e40b44444', '--NEW NAME--', '--NEW DATA--']
+//            '606c508dc517e404c96b',
+//            ['8f9c4837cb0e40b44444', '606c508dc517e404c96b', '===NAME===', '===DATA===']
 //        );die();
 
         $storage = new StorageTree(
