@@ -20,7 +20,7 @@ use http\Exception;
     * а затем добавляете нужный текст в tmp.txt (в конце файла), после чего продолжаете чтение из исходного файла до конца.
     * затем замените tmp.txt исходным файлом. в конце вы получили файл с добавленным текстом в середине :)
  */
-class FileChangeTransactionEngine
+class CsvFileTransactionEngine
 {
     //db.csv
     private string $dbFileName = '/data/storage.csv';

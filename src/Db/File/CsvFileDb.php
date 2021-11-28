@@ -2,13 +2,13 @@
 
 namespace LKSS\Db\File;
 
-class CsvFileTransactionalDb implements FileTransactionalDbInterface
+class CsvFileDb implements FileDbInterface
 {
-    private FileChangeTransactionEngine $transactionEngine;
+    private CsvFileTransactionEngine $transactionEngine;
 
     public function __construct()
     {
-        $this->transactionEngine = new FileChangeTransactionEngine();
+        $this->transactionEngine = new CsvFileTransactionEngine();
     }
 
     protected function get(string $key): int

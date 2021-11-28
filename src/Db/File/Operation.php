@@ -2,8 +2,6 @@
 
 namespace LKSS\Db\File;
 
-use LKSS\Console\Commands\Interfaces\SimpleCommand;
-
 class Operation
 {
     public const INSERT = 'insert';

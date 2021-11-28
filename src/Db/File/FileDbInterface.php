@@ -2,9 +2,9 @@
 
 namespace LKSS\Db\File;
 
-use LKSS\Db\TransactionalDbInterface;
+use LKSS\Db\DbInterface;
 
-interface FileTransactionalDbInterface extends TransactionalDbInterface
+interface FileDbInterface extends DbInterface
 {
     public function insert(array $data): void;
     public function update(string $key, array $newData): void;
