@@ -29,10 +29,10 @@ class ShowNodeCommand extends AbstractCompoundCommand
 
             if (!is_null($node)) {
                 echo "\n";
-                echo "key: " . $node->getKey() . "\n";
-                echo "name: " . $node->getName() . "\n";
-                echo "data: \n" . $node->getData() . "\n";
-                echo "childs: ";
+                echo "\e[90mkey:\033[0m " . $node->getKey() . "\n";
+                echo "\e[90mname:\033[0m " . $node->getName() . "\n";
+                echo "\e[90mdata:\033[0m \n" . $node->getData() . "\n";
+                echo "\e[90mchilds:\033[0m ";
                 echo is_array($node->getChildren()) ? count($node->getChildren()) : 0 . "\n";
                 echo "\n" . "\n";
             } else {

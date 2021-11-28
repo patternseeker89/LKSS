@@ -31,9 +31,9 @@ class StorageVisualizer
     protected function printCurrentNodeString(string $key, string $name, string $separator): void
     {
         if ($separator == self::SEPARATOR_DEFAULT) {
-            echo '* "' . $name . '" ' . "[" . $key . "]" . "\n";
+            echo '* "' . $name . '" ' . "\e[90m[" . $key . "]\033[0m" . "\n";
         } else {
-            echo $separator . '"' . $name . '" ' . "[" . $key . "]" . "\n";
+            echo $separator . '"' . $name . '" ' . "\e[90m[" . $key . "]\033[0m" . "\n";
         }
     }
 

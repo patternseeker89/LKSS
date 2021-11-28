@@ -26,7 +26,17 @@ class Console
     public function bash(): void
     {
         while (true) {
-            $command = readline("> ");
+            //$command = readline("> ");
+            //echo "\033[1mbold\n";die();
+            /**
+             * TODO normal text input from terminal
+             * echo "\033[1mbold\n";die();
+             * echo "\033[1mbold\033[31m some colored text \e[90mDark gray fgrtggr\n";die();
+             * https://misc.flogisoft.com/bash/tip_colors_and_formatting
+             * https://unix.stackexchange.com/questions/37260/change-font-in-echo-command
+             */
+            echo "> ";
+            $command = stream_get_line(STDIN, 999999, "\n");
 
             switch ($command) {
                 case SimpleCommand::EXIT:
