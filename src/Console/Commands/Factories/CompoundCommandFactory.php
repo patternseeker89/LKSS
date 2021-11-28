@@ -23,7 +23,7 @@ class CompoundCommandFactory implements CommandFactory
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function create(string $type): CompoundCommand
     {
@@ -36,7 +36,7 @@ class CompoundCommandFactory implements CommandFactory
             case CompoundCommand::MOVE_NODE: return new MoveNodeCommand($this->storage);
             case CompoundCommand::CLONE_NODE: return new CloneNodeCommand($this->storage);
             default:
-                throw new Exception('Wrong command type passed.');
+                throw new \Exception('Wrong command type passed.');
         }
 
     }

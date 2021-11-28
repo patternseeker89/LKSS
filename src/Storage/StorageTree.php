@@ -8,6 +8,8 @@ use LKSS\Storage\StorageTreeInterface;
 
 class StorageTree implements StorageTreeInterface
 {
+    private const ERROR_MESSAGE_NODE_NOT_FOUND = "Node does not exist for this key!\n";
+
     private ?Node $root = null;
     private StorageKeeperInterface $keeper;
     private StorageVisualizer $visualizer;
@@ -52,8 +54,14 @@ class StorageTree implements StorageTreeInterface
             if (\is_null($parent)) {
                 unset($this->root);
             } else {
-                $parent->deleteChild($key);
+                if (!$node->haveChildren()) {
+                    $parent->deleteChild($key);
+                } else {
+                    echo "Error: this node have children!\n";
+                }
             }
+        } else {
+            echo self::ERROR_MESSAGE_NODE_NOT_FOUND;
         }
     }
 
@@ -63,9 +71,13 @@ class StorageTree implements StorageTreeInterface
         $targetNode = $this->getNodeByKey($targetNodeKey);
 
         if (!\is_null($node) && !\is_null($targetNode)) {
-            $this->deleteNode($nodeKey);
-            $node->setParent($targetNode);
-            $targetNode->addChild($node);
+            if (!$node->haveChildren()) {
+                $this->deleteNode($nodeKey);
+                $node->setParent($targetNode);
+                $targetNode->addChild($node);
+            } else {
+                echo "Error: this node have children!\n";
+            }
         } else {
             echo "Wrong current or target node key!\n";
         }
@@ -77,12 +89,13 @@ class StorageTree implements StorageTreeInterface
         $targetNode = $this->getNodeByKey($targetNodeKey);
 
         if (!\is_null($node) && !\is_null($targetNode)) {
-            
-            //@TODO maybe need create new Node() with existed node params(name, data)?
-            
-            $clonedNode = clone $node;
-            $clonedNode->setParent($targetNode);
-            $targetNode->addChild($clonedNode);
+            if (!$node->haveChildren()) {
+                $newNode = new Node(null, $node->getName(), $node->getData());
+                $newNode->setParent($targetNode);
+                $targetNode->addChild($newNode);
+            } else {
+                echo "Error: this node have children!\n";
+            }
         } else {
             echo "Wrong current or target node key!\n";
         }
@@ -100,7 +113,7 @@ class StorageTree implements StorageTreeInterface
         if (!\is_null($node)) {
             $node->setData($data);
         } else {
-            echo "Node does not exist for this key!\n";
+            echo self::ERROR_MESSAGE_NODE_NOT_FOUND;
         }
     }
     
@@ -111,7 +124,7 @@ class StorageTree implements StorageTreeInterface
         if (!\is_null($node)) {
             $node->setName($newName);
         } else {
-            echo "Node does not exist for this key!\n";
+            echo self::ERROR_MESSAGE_NODE_NOT_FOUND;
         }
     }
 
@@ -133,7 +146,6 @@ class StorageTree implements StorageTreeInterface
     public function getNodeByKey(string $key): ?Node
     {
         if ($this->root->getKey() === $key) {
-
             return $this->root;
         } else {
             return $this->findNodeInTree($key, $this->root);
