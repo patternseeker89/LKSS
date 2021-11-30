@@ -26,10 +26,9 @@ class Console
     public function bash(): void
     {
         while (true) {
-            //$command = readline("> ");
-            //echo "\033[1mbold\n";die();
             /**
              * TODO normal text input from terminal
+             * $command = readline("> ");
              * echo "\033[1mbold\n";die();
              * echo "\033[1mbold\033[31m some colored text \e[90mDark gray fgrtggr\n";die();
              * https://misc.flogisoft.com/bash/tip_colors_and_formatting
