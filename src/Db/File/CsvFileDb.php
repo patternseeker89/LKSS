@@ -2,6 +2,9 @@
 
 namespace LKSS\Db\File;
 
+/**
+* Drop transactionEngine, make simple operations with csv file(read, insert, delete, update) only
+*/
 class CsvFileDb implements FileDbInterface
 {
     private CsvFileTransactionEngine $transactionEngine;
