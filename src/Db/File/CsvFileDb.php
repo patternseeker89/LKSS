@@ -21,9 +21,9 @@ class CsvFileDb implements FileDbInterface
 
     /**
      * @TODO throw exception and catch if file open error
-     * MAKE transaction: commit, rollback
+     * array $data chango on Node() class or other
      */
-    public function insert(array $data): void
+    public function insert(Node $node): void
     {
         $this->transactionEngine->makeTransaction('', $data, Operation::INSERT);
     }
