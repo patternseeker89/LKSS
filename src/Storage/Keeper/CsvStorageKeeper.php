@@ -22,7 +22,6 @@ class CsvStorageKeeper implements StorageKeeperInterface
         $rootNode = null;
         if (file_exists($this->storageFileName)) {
             $nodesList = $this->loadNodesListFromFile();
-            echo '<pre>';var_dump($nodesList);die();
             $rootNode = $this->buildStorageTree($storage, $nodesList);
         }
 
@@ -49,7 +48,7 @@ class CsvStorageKeeper implements StorageKeeperInterface
             'parent_key' => $parentKey,
             'key' => $node->getKey(),
             'name' => $node->getName(),
-            'data' => $node->getData(),
+            'data' => str_replace("\n", "\\n", $node->getData()),
         ];
     }
 
@@ -82,7 +81,6 @@ class CsvStorageKeeper implements StorageKeeperInterface
         $lines = file($this->storageFileName);
         $nodesList = [];
         foreach ($lines as $line) {
-            //@TODO maube use fgetcsv!!!
             $nodesList[] = str_getcsv($line, ",", '"', "\n");
         }
 
@@ -100,7 +98,7 @@ class CsvStorageKeeper implements StorageKeeperInterface
                 $parentKey = $node[0];
             }
 
-            $storage->insertNode($parentKey, $node[1], $node[2], $node[3]);
+            $storage->insertNode($parentKey, $node[1], $node[2], str_replace("\\n", "\n", $node[3]));
         }
 
         return $storage->getRoot();

@@ -57,8 +57,7 @@ class VerticalCommandParamsHandler
             $result = $this->getStringParam();
         } elseif ($paramHandlerType == static::HANDLER_TYPE_EDITOR) {
             $result = $this->getParamByEditor();
-        }
-        elseif ($paramHandlerType == static::HANDLER_TYPE_FILE) {
+        } elseif ($paramHandlerType == static::HANDLER_TYPE_FILE) {
             $result = $this->getParamByFile();
         } else {
             throw new \Exception('Unknown param`s handler type!');
