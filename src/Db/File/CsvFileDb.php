@@ -2,6 +2,10 @@
 
 namespace LKSS\Db\File;
 
+/**
+* Механизм атомарного коммита в SQLite
+*https://habr.com/ru/post/181584/
+*/
 class CsvFileDb implements FileDbInterface
 {
     private CsvFileHandler $fileHandler;
