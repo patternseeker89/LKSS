@@ -98,7 +98,7 @@ class CsvStorageKeeper implements StorageKeeperInterface
                 $parentKey = $node[0];
             }
 
-            $storage->insertNode($parentKey, $node[1], $node[2], str_replace("\\n", "\n", $node[3]));
+            $storage->insertNode($parentKey, $node[1], $node[2], str_replace("\\n", "\n", $node[3]), true);
         }
 
         return $storage->getRoot();

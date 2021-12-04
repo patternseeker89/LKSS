@@ -6,7 +6,7 @@ use LKSS\Db\DbInterface;
 
 interface FileDbInterface extends DbInterface
 {
-    public function insert(array $data): void;
-    public function update(string $key, array $newData): void;
-    public function delete(): void;
+    public function insert(string $key, array $data): bool;
+    public function update(string $key, array $newData): bool;
+    public function delete(string $key): bool;
 }

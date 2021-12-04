@@ -20,7 +20,7 @@ use http\Exception;
     * а затем добавляете нужный текст в tmp.txt (в конце файла), после чего продолжаете чтение из исходного файла до конца.
     * затем замените tmp.txt исходным файлом. в конце вы получили файл с добавленным текстом в середине :)
  */
-class CsvFileTransactionEngine
+class CsvFileHandler
 {
     //db.csv
     private string $dbFileName = '/data/storage.csv';
@@ -34,6 +34,7 @@ class CsvFileTransactionEngine
     }
 
     /**
+     * @TODO make rollback if error operation on any step
      * @throws \Exception
      */
     protected function makeFileChangeOperation(string $key, array $newData, string $operation): void
@@ -48,12 +49,14 @@ class CsvFileTransactionEngine
             throw new \Exception('Opening temp db file error!');
         }
 
+        $counter = 1;
         while ($currentData = fgetcsv($filePointer)) {
             if ($currentData[1] == $key) {
-                Operation::make($tempFilePointer, $newData, $operation);
+                Operation::make($tempFilePointer, $currentData, $newData, $operation);
             } else {
                 fputcsv($tempFilePointer, $currentData);
             }
+            $counter++;
         }
 
         if (!fclose($filePointer)) {
@@ -73,12 +76,13 @@ class CsvFileTransactionEngine
         }
     }
 
-    public function makeTransaction(string $key, array $newData, string $operation): bool
+    public function makeOperation(string $key, array $newData, string $operation): bool
     {
         try {
             $this->makeFileChangeOperation($key, $newData, $operation);
             $result = true;
         } catch (\Throwable $exception) {
+            //@TODO add error into logger
             $result = false;
         }
 

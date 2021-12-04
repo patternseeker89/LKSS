@@ -2,45 +2,27 @@
 
 namespace LKSS\Db\File;
 
-/**
-* Drop transactionEngine, make simple operations with csv file(read, insert, delete, update) only
-*/
 class CsvFileDb implements FileDbInterface
 {
-    private CsvFileTransactionEngine $transactionEngine;
+    private CsvFileHandler $fileHandler;
 
-    public function __construct()
+    public function __construct(CsvFileHandler $csvFileHandler)
     {
-        $this->transactionEngine = new CsvFileTransactionEngine();
+        $this->fileHandler = $csvFileHandler;
     }
 
-    protected function get(string $key): int
+    public function insert(string $key, array $data): bool
     {
-        return 1;
+        return $this->fileHandler->makeOperation($key, $data, Operation::INSERT);
     }
 
-    /**
-     * @TODO throw exception and catch if file open error
-     * array $data chango on Node() class or other
-     */
-    public function insert(Node $node): void
+    public function update(string $key, array $newData): bool
     {
-        $this->transactionEngine->makeTransaction('', $data, Operation::INSERT);
+        return $this->fileHandler->makeOperation($key, $newData, Operation::UPDATE);
     }
 
-    public function insertIntoEnd(array $data): void
+    public function delete(string $key): bool
     {
-//        $filePointer = fopen($this->dbFileName, 'a');
-//        fputcsv($filePointer, $data);
-    }
-
-    public function update(string $key, array $newData): void
-    {
-        $this->transactionEngine->makeTransaction($key, $newData, Operation::UPDATE);
-    }
-
-    public function delete(): void
-    {
-
+        return $this->fileHandler->makeOperation($key, [], Operation::DELETE);
     }
 }

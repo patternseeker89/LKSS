@@ -2,6 +2,8 @@
 
 namespace LKSS\Storage;
 
+use LKSS\Db\DbInterface;
+use LKSS\Db\File\CsvFileDb;
 use LKSS\Storage\Keeper\StorageKeeperInterface;
 use LKSS\Storage\Node;
 use LKSS\Storage\StorageTreeInterface;
@@ -13,38 +15,70 @@ class StorageTree implements StorageTreeInterface
     private ?Node $root = null;
     private StorageKeeperInterface $keeper;
     private StorageVisualizer $visualizer;
+    private DbInterface $db;
 
     public function __construct(
         StorageKeeperInterface $keeper,
         StorageVisualizer $visualizer,
+        CsvFileDb $csvFileDb,
     ) {
         $this->keeper = $keeper;
         $this->visualizer = $visualizer;
+        $this->db = $csvFileDb;
         $this->root = $this->keeper->load($this);
     }
 
     public function __destruct()
     {
-        $this->keeper->save($this->root);
+        //$this->keeper->save($this->root);
     }
 
-    public function insertNode(?string $parentKey, ?string $key, string $name, string $data): void
+    /**
+     * @TODO refactoring of this method
+     * separate into other class InsertNode example
+     */
+    public function insertNode(?string $parentKey, ?string $key, string $name, string $data, bool $isOnlyMemory = false): void
     {
         $newNode = new Node($key, $name, $data);
 
-        if (\is_null($parentKey)) {
-            $this->root = $newNode;
-        } else {
-            $parentNode = $this->getNodeByKey($parentKey);
-            if (!is_null($parentNode)) {
-                $newNode->setParent($parentNode);
-                $parentNode->addChild($newNode);
+        if (!$isOnlyMemory) {
+            if ($this->db->insert(
+                $parentKey,
+                [$parentKey, $newNode->getKey(), $name, str_replace("\n", "\\n", $data)]
+            )) {
+                if (\is_null($parentKey)) {
+                    $this->root = $newNode;
+                } else {
+                    $parentNode = $this->getNodeByKey($parentKey);
+                    if (!is_null($parentNode)) {
+                        $newNode->setParent($parentNode);
+                        $parentNode->addChild($newNode);
+                    } else {
+                        echo "Error: parent key is wrong!\n";
+                    }
+                }
             } else {
-                echo "Error: parent key is wrong!\n";
+                echo "Error: new node don`t saved in db!\n";
+            }
+        } else {
+            if (\is_null($parentKey)) {
+                $this->root = $newNode;
+            } else {
+                $parentNode = $this->getNodeByKey($parentKey);
+                if (!is_null($parentNode)) {
+                    $newNode->setParent($parentNode);
+                    $parentNode->addChild($newNode);
+                } else {
+                    echo "Error: parent key is wrong!\n";
+                }
             }
         }
     }
 
+    /**
+     * @TODO refactoring of this method
+     * separate into other class
+     */
     public function deleteNode(string $key): void
     {
         $node = $this->getNodeByKey($key);
@@ -55,13 +89,17 @@ class StorageTree implements StorageTreeInterface
                 unset($this->root);
             } else {
                 if (!$node->haveChildren()) {
-                    $parent->deleteChild($key);
+                    if ($this->db->delete($key)) {
+                        $parent->deleteChild($key);
+                    } else {
+                        echo self::ERROR_MESSAGE_NODE_NOT_FOUND;
+                    }
                 } else {
                     echo "Error: this node have children!\n";
                 }
             }
         } else {
-            echo self::ERROR_MESSAGE_NODE_NOT_FOUND;
+            echo "Error: cannot delete node in db!\n";
         }
     }
 
@@ -101,17 +139,19 @@ class StorageTree implements StorageTreeInterface
         }
     }
 
-    public function cloneNodeWithoutChildren(int $key, ?int $targetNodeKey): void
-    {
-        
-    }
-
     public function updateNode(string $key, string $data): void
     {
         $node = $this->getNodeByKey($key);
 
         if (!\is_null($node)) {
-            $node->setData($data);
+            if ($this->db->update(
+                $key,
+                [$node->getParent()->getKey(), $node->getKey(), $node->getName(), str_replace("\n", "\\n", $data)])
+            ) {
+                $node->setData($data);
+            } else {
+                echo "Error: cannot update node in db!\n";
+            }
         } else {
             echo self::ERROR_MESSAGE_NODE_NOT_FOUND;
         }
@@ -136,11 +176,6 @@ class StorageTree implements StorageTreeInterface
     public function printTree(Node $parentNode, string $separator = ''): void
     {
         $this->visualizer->printTree($parentNode, $separator);
-    }
-
-    public function getPath(int $startNodeKey, int $endNodeKey): void
-    {
-        
     }
 
     public function getNodeByKey(string $key): ?Node

@@ -56,25 +56,28 @@ class Console
     public function handleCompoundCommand(string $command): void
     {
         switch ($command) {
-            case substr($command, 0, strlen(CompoundCommand::SHOW_NODE)) == CompoundCommand::SHOW_NODE:
+            case "":
+                echo "Empty command!\n";
+                break;
+            case str_starts_with($command, CompoundCommand::SHOW_NODE):
                 $this->compoundCommandFactory->create(CompoundCommand::SHOW_NODE)->execute($command);
                 break;
-            case substr($command, 0, strlen(CompoundCommand::INSERT_NODE)) == CompoundCommand::INSERT_NODE:
+            case str_starts_with($command, CompoundCommand::INSERT_NODE):
                 $this->compoundCommandFactory->create(CompoundCommand::INSERT_NODE)->execute($command);
                 break;
-            case substr($command, 0, strlen(CompoundCommand::DELETE_NODE)) == CompoundCommand::DELETE_NODE:
+            case str_starts_with($command, CompoundCommand::DELETE_NODE):
                 $this->compoundCommandFactory->create(CompoundCommand::DELETE_NODE)->execute($command);
                 break;
-            case substr($command, 0, strlen(CompoundCommand::UPDATE_NODE)) == CompoundCommand::UPDATE_NODE:
+            case str_starts_with($command, CompoundCommand::UPDATE_NODE):
                 $this->compoundCommandFactory->create(CompoundCommand::UPDATE_NODE)->execute($command);
                 break;
-            case substr($command, 0, strlen(CompoundCommand::RENAME_NODE)) == CompoundCommand::RENAME_NODE:
+            case str_starts_with($command, CompoundCommand::RENAME_NODE):
                 $this->compoundCommandFactory->create(CompoundCommand::RENAME_NODE)->execute($command);
                 break;
-            case substr($command, 0, strlen(CompoundCommand::MOVE_NODE)) == CompoundCommand::MOVE_NODE:
+            case str_starts_with($command, CompoundCommand::MOVE_NODE):
                 $this->compoundCommandFactory->create(CompoundCommand::MOVE_NODE)->execute($command);
                 break;
-            case substr($command, 0, strlen(CompoundCommand::CLONE_NODE)) == CompoundCommand::CLONE_NODE:
+            case str_starts_with($command, CompoundCommand::CLONE_NODE):
                 $this->compoundCommandFactory->create(CompoundCommand::CLONE_NODE)->execute($command);
                 break;
             default:

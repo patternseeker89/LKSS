@@ -47,14 +47,4 @@ class UpdateNodeCommand extends AbstractCompoundCommand
 //            echo "Dont valid params!\n";
 //        }
     }
-
-    protected function setNodeData(): string
-    {
-        $file = '/tmp/test.txt';
-        system("echo '' > /tmp/test.txt && nano $file > `tty`");
-        $data = file_get_contents($file);
-        system("rm $file");
-        
-        return $data;
-    }
 }
