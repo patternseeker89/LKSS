@@ -2,10 +2,9 @@
 2. Build image:
 	docker build -t lkss .
 3. Run image:
-	docker run lkss
+    	docker run lkss
 4. Run bash into container:
-    sudo docker run -it lkss /bin/sh
+    	docker run -it lkss /bin/sh
 5. Volume:
-    sudo docker run -v $(pwd):/usr/src lkss
-
-
+    	docker run -v $(pwd):/usr/src lkss
+    	docker run -it -v $(pwd):/usr/src lkss /bin/sh
