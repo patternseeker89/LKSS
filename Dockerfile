@@ -21,5 +21,6 @@ WORKDIR /usr/src
 
 RUN composer install
 
+#CMD bash -c "composer install"
 #CMD [ "php", "./lkss.php" ]
-CMD bash -c "composer install"
+CMD ["/bin/bash"]
