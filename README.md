@@ -1,6 +1,9 @@
 # LKSS
 Linked knowledge storage system
 
+
+Простое линейное приватное хранилище информации !!!!!!!!!!!!!
+
 TODO:
 
 1. Add php-di container in project
