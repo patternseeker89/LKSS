@@ -3,6 +3,9 @@ FROM php:8.0-cli
 RUN apt-get update
 RUN apt-get install -y vim nano
 
+# Install Telnet
+RUN apt-get update && apt-get install -y telnet
+
 # Install Composer
 #RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -15,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     unzip
 RUN docker-php-ext-install zip
+RUN docker-php-ext-install sockets
 
 COPY . /usr/src
 WORKDIR /usr/src
