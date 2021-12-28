@@ -2,7 +2,10 @@
 
 namespace LKSS\Network;
 
-class Client
+class Client implements ClientInterface
 {
+    public function start(): void
+    {
 
+    }
 }
