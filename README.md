@@ -16,4 +16,4 @@ TODO:
 3. Make transactional own csv file db  
 4. Make network part of project
 5. Make crypto(secure) part of project
-
+6. Rename on DataSyncSystem
