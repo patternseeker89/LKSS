@@ -35,8 +35,8 @@ class Console
              * https://unix.stackexchange.com/questions/37260/change-font-in-echo-command
              */
             echo "> ";
-            $command = stream_get_line(STDIN, 999999, "\n");
-
+            $command = stream_get_line(STDIN, 999999, "\r\n");
+            
             switch ($command) {
                 case SimpleCommand::EXIT:
                     $this->simpleCommandFactory->create(SimpleCommand::EXIT)->execute();

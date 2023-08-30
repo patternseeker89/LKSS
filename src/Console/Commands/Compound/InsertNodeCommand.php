@@ -32,7 +32,7 @@ class InsertNodeCommand extends AbstractCompoundCommand
             [
                 'parentKey' => VerticalCommandParamsHandler::HANDLER_TYPE_STRING,
                 'name' => VerticalCommandParamsHandler::HANDLER_TYPE_STRING,
-                'data' => VerticalCommandParamsHandler::HANDLER_TYPE_EDITOR,
+                'data' => VerticalCommandParamsHandler::HANDLER_TYPE_STRING,
             ]
         );
 

@@ -23,8 +23,8 @@ use http\Exception;
 class CsvFileHandler
 {
     //db.csv
-    private string $dbFileName = '/data/storage.csv';
-    private string $dbTempFileName = '/data/temp-storage.csv';
+    private string $dbFileName = '\data\storage.csv';
+    private string $dbTempFileName = '\data\temp-storage.csv';
 
     public function __construct()
     {
